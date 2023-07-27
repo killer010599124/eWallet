@@ -6,6 +6,11 @@ import { View, StatusBar } from "react-native";
 import WelcomeScreen from "./screens/WelcomePage";
 import LoginScreen from "./screens/LoginPage";
 import HomeScreen from "./screens/HomePage";
+import ProductScreen from "./screens/ProductPage";
+import ProductDetailPage from "./screens/Details";
+import EditPage from "./screens/EditPage";
+import NoResultPage from "./screens/EmptyPage";
+import NewPage from "./screens/NewPage";
 // Import any other screens you want to use
 const Stack = createStackNavigator();
 export default function App() {
@@ -16,6 +21,11 @@ export default function App() {
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Product" component={ProductScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="Details" component={ProductDetailPage} options={{ headerShown: false }}/>
+          <Stack.Screen name="Edit" component={EditPage} options={{ headerShown: false }}/>
+          <Stack.Screen name="Empty" component={NoResultPage} options={{ headerShown: false }}/>
+          <Stack.Screen name="New" component={NewPage} options={{ headerShown: false }}/>
         </Stack.Navigator>
       </NavigationContainer>
   );

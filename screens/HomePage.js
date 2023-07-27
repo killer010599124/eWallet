@@ -55,12 +55,15 @@ const HomeScreen = ({ navigation, route }) => {
             alignItems: "center",
           }}
           underlayColor="#fff"
+          onPress={() => {
+            navigation.navigate('Product');
+          }}
         >
           <TouchableOpacity
             style={{
               backgroundColor: "#FFE382",
               borderRadius: 10,
-              marginTop: dimension.height * 0.035,
+              marginTop: dimension.height * 0.02,
               height: dimension.height * 0.08,
               width: dimension.height * 0.08,
               alignItems: "center",
@@ -68,9 +71,16 @@ const HomeScreen = ({ navigation, route }) => {
           >
             <Image
               source={require("../assets/search.png")}
-              style={{ width : '60%' , height : '60%', marginTop : dimension.height * 0.015 }}
+              style={{
+                width: "60%",
+                height: "60%",
+                marginTop: dimension.height * 0.015,
+              }}
             />
           </TouchableOpacity>
+          <Text style={{ color: "#363636", textAlign: "center", fontSize: 12 }}>
+            Product
+          </Text>
         </TouchableOpacity>
         <View
           style={{
@@ -93,7 +103,7 @@ const HomeScreen = ({ navigation, route }) => {
               style={{
                 backgroundColor: "#B0EDF3",
                 borderRadius: 10,
-                marginTop: dimension.height * 0.035,
+                marginTop: dimension.height * 0.02,
                 height: dimension.height * 0.08,
                 width: dimension.height * 0.08,
                 alignItems: "center",
@@ -101,9 +111,18 @@ const HomeScreen = ({ navigation, route }) => {
             >
               <Image
                 source={require("../assets/tag.png")}
-                style={{ width : '60%' , height : '60%', marginTop : dimension.height * 0.015 }}
+                style={{
+                  width: "60%",
+                  height: "60%",
+                  marginTop: dimension.height * 0.015,
+                }}
               />
             </TouchableOpacity>
+            <Text
+              style={{ color: "#363636", textAlign: "center", fontSize: 12 }}
+            >
+              Price Update
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -120,7 +139,7 @@ const HomeScreen = ({ navigation, route }) => {
               style={{
                 backgroundColor: "#B0EDF3",
                 borderRadius: 10,
-                marginTop: dimension.height * 0.035,
+                marginTop: dimension.height * 0.02,
                 height: dimension.height * 0.08,
                 width: dimension.height * 0.08,
                 alignItems: "center",
@@ -128,11 +147,42 @@ const HomeScreen = ({ navigation, route }) => {
             >
               <Image
                 source={require("../assets/print.png")}
-                style={{ width : '60%' , height : '60%', marginTop : dimension.height * 0.015 }}
+                style={{
+                  width: "60%",
+                  height: "60%",
+                  marginTop: dimension.height * 0.015,
+                }}
               />
             </TouchableOpacity>
+            <Text
+              style={{ color: "#363636", textAlign: "center", fontSize: 12 }}
+            >
+              Product Print
+            </Text>
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#D5D5DC",
+            borderRadius: 10,
+            marginTop: dimension.height * 0.2,
+            height: dimension.height * 0.08,
+            width: dimension.height * 0.08,
+            borderRadius: dimension.height * 0.04,
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={require("../assets/Vector.png")}
+            style={{
+              width: "40%",
+              height: "40%",
+              marginTop: dimension.height * 0.025,
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -159,6 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   header: {
+    right: 0,
     flexDirection: "row",
     alignItems: "center",
     padding: 20,

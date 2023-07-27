@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback, Component } from 'react';
 import { StyleSheet, ScrollView, View, Dimensions, Text, Image, TouchableOpacity } from 'react-native';
-const Button = ({ title, onPress  }) => {
+const Button1 = ({ title, onPress  }) => {
   const [dimension, setDimension] = useState(Dimensions.get('window'));
   const onChange = () => {
     setDimension(Dimensions.get('window'));
@@ -26,22 +26,18 @@ const Button = ({ title, onPress  }) => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center', alignItems: 'center',
-    backgroundColor: '#ffffff',
-  },
+ 
   loginScreenButton: {
     alignSelf : 'center',
-    backgroundColor: '#0D6EFD',
+    backgroundColor: 'white',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#0D6EFD',
+    borderColor: 'white',
     textAlign: 'center',
     alignItems: 'center'
   },
   loginText: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
     alignItems : 'center',
     lineHeight: 28,
@@ -50,4 +46,4 @@ const styles = StyleSheet.create({
     paddingRight: 10
   }
 });
-export default Button;
+export default Button1;
