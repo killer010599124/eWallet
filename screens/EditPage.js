@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     color: "#707B81",
     fontSize: 12,
     fontWeight: "bold",
+
   },
 
   image: {

@@ -98,6 +98,9 @@ const HomeScreen = ({ navigation, route }) => {
               alignItems: "center",
             }}
             underlayColor="#fff"
+            onPress={() => {
+              navigation.navigate('Scanner');
+            }}
           >
             <TouchableOpacity
               style={{

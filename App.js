@@ -11,6 +11,8 @@ import ProductDetailPage from "./screens/Details";
 import EditPage from "./screens/EditPage";
 import NoResultPage from "./screens/EmptyPage";
 import NewPage from "./screens/NewPage";
+import ScannerPage from "./screens/ScanPage";
+import PriceUpdatePage from "./screens/PriceUpdate";
 // Import any other screens you want to use
 const Stack = createStackNavigator();
 export default function App() {
@@ -26,6 +28,8 @@ export default function App() {
           <Stack.Screen name="Edit" component={EditPage} options={{ headerShown: false }}/>
           <Stack.Screen name="Empty" component={NoResultPage} options={{ headerShown: false }}/>
           <Stack.Screen name="New" component={NewPage} options={{ headerShown: false }}/>
+          <Stack.Screen name="Scanner" component={ScannerPage} options={{ headerShown: false }}/>
+          <Stack.Screen name="PriceUpdate" component={PriceUpdatePage} options={{ headerShown: false }}/>
         </Stack.Navigator>
       </NavigationContainer>
   );

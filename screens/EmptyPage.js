@@ -8,7 +8,21 @@ const NoResultPage = ({ navigation, route }) => {
     setDimension(Dimensions.get("window"));
   };
   return (
-    <View style={{ backgroundColor: "#FFC554", padding: 10, flex: 1 }}>
+    <View
+      style={{
+        backgroundColor: "#FFC554",
+        padding: 10,
+        flex: 1,
+        shadowColor: "#000000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 50,
+        elevation: 20,
+      }}
+    >
       <Image source={require("../assets/empty.png")} style={styles.image} />
       <Image
         source={require("../assets/shadow.png")}
@@ -20,7 +34,7 @@ const NoResultPage = ({ navigation, route }) => {
       <View style={{ marginTop: "40%" }}>
         <Button1
           title="Next"
-          onPress={() => navigation.navigate('New')}
+          onPress={() => navigation.navigate("New")}
           style={{
             marginTop: "30%",
           }}
