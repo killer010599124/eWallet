@@ -99,7 +99,8 @@ const HomeScreen = ({ navigation, route }) => {
             }}
             underlayColor="#fff"
             onPress={() => {
-              navigation.navigate('Scanner');
+              // navigation.navigate('Scanner');
+              navigation.navigate('Barcode');
             }}
           >
             <TouchableOpacity

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
-import { BarCodeScanner } from "expo-barcode-scanner";
+
 const ScannerPage = ({navigation}) => {
   const [cameraReady, setCameraReady] = useState(false);
 
