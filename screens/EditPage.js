@@ -77,15 +77,10 @@ const EditPage = ({ navigation, route }) => {
   };
 
   const updateData = () => {
-    // var formdata = new FormData();
-    // formdata.append("name", name);
-    // formdata.append("list_price", parseFloat(saleprice));
-    // formdata.append("standard_price", parseFloat(cost));
-    // formdata.append("product_id", parsedProduct.id);
-    // formdata.append("barcode", barcode);
-    // formdata.append("categ_id", "");
-    // formdata.append("default_code", dcode);
+  
     const headers = {
+      
+      Accept: "application/json",
       'Content-Type': 'application/json',
       // Add any additional headers if necessary
     };
@@ -103,15 +98,7 @@ const EditPage = ({ navigation, route }) => {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(payload)
-      // body: JSON.stringify({
-      //   name : name,
-      //   list_price : parseFloat(saleprice),
-      //   standard_price : parseFloat(cost),
-      //   product_id : parsedProduct.id,
-      //   barcode : barcode,
-      //   default_code : dcode
-      // }),
-      // body : formdata,
+
     })
       .then((response) => {
         return response.json();
@@ -119,13 +106,10 @@ const EditPage = ({ navigation, route }) => {
       .then((data) => {
         // Here, you can access the JSON data
 
-        console.log("This is response " + data);
-        // if (data.result) {
-        //   navigation.navigate("Home", { username });
-        // } else {
-        //   alert("Invalid database name or username or password");
-        // }
-        // Do further processing or update your React Native component state
+        console.log("This is response " + JSON.stringify(data));
+       
+        navigation.navigate("Product");
+        
       })
       .catch((error) => {
         // Handle any errors that occurred during the request

@@ -115,35 +115,23 @@ class APIController(http.Controller):
     @http.route('/api/product/create/', auth='public', type='http', methods=['POST'], csrf=False)
     def create_product(self, **post):
 
-        login = request.params.get('login')
-        password = request.params.get('password')
-        # uid = request.session.authenticate(request.db, login, password)
+        data = json.loads(request.httprequest.data)
+        data['list_price'] = round(float(data['list_price']), 3)
+        data['standard_price'] = round(float(data['standard_price']), 3)
+        try:
+            new_product = http.request.env['product.product'].create(data)
+        except Exception as e:
+            return Response(response=json.dumps({'error': str(e)}),
+                            content_type='application/json', status=400)
 
-        # Retrieve the JSON payload from the request
-        name = request.params.get('name')
-        # description_sale = request.params.get('description_sale')
-        list_price = request.params.get('list_price')
-        categ_id = request.params.get('categ_id')
-        default_code = request.params.get('default_code')
-        barcode = request.params.get('barcode')
-        standard_price = request.params.get('standard_price')
-
-        json_product = {
-            'name': name,
-            # 'description_sale': description_sale,
-            'list_price': list_price,
-            'standard_price': standard_price,
-            'barcode': barcode,
-            'default_code': default_code
-        }
-        new_product = http.request.env['product.product'].create(json_product)
-
+        
         return json.dumps({
             'id': new_product.id,
             'name': new_product.name,
             # 'description': new_product.description_sale,
             'list_price': new_product.list_price,
             'default_code': new_product.default_code,
+            'barcode': new_product.barcode,
             'categories': [category.name for category in new_product.categ_id],
             'image_url': '/web/image/product.product/%s/image_1024' % new_product.id,
             'standard_price': new_product.standard_price,
@@ -165,19 +153,20 @@ class APIController(http.Controller):
     @http.route('/api/update/product', type='http', auth='public', methods=['POST'], csrf=False)
     def update_product(self, **kw):
     
-        product_id = request.params.get('product_id')
+        data = json.loads(request.httprequest.data)
+
+
+        product_id = data['product_id']
         product_id = int(product_id)  # Convert the parameter to an integer
         
-        name = request.params.get('name')
-        # description_sale = request.params.get('description_sale')
-        list_price = float(request.params.get('list_price'))
-        standard_price = float(request.params.get('standard_price'))
-        barcode = request.params.get('barcode')
-        default_code = request.params.get('default_code')
+        name = data['name']
+        list_price = round(float(data['list_price']), 3)
+        standard_price = round(float(data['standard_price']), 3)
+        barcode = data['barcode']
+        default_code = data['default_code']
 
         json_product = {
             'name': name,
-            # 'description_sale': description_sale,
             'list_price': list_price,
             'standard_price': standard_price,
             'barcode': barcode,

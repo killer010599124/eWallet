@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   image: {
     // marginLeft : '10%',
     alignSelf: "center",
-    marginTop: "5%",
+    marginTop: "20%",
     width: "50%",
     height: "50%",
     resizeMode: "contain",

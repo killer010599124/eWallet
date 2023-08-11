@@ -28,15 +28,8 @@ const NewPage = ({ navigation, route }) => {
     setDimension(Dimensions.get("window"));
   };
   const addProduct = () => {
-    // var formdata = new FormData();
-    // formdata.append("name", name);
-    // formdata.append("list_price", parseFloat(saleprice));
-    // formdata.append("standard_price", parseFloat(cost));
-    // formdata.append("product_id", parsedProduct.id);
-    // formdata.append("barcode", barcode);
-    // formdata.append("categ_id", "");
-    // formdata.append("default_code", dcode);
     const headers = {
+      Accept: "application/json",
       "Content-Type": "application/json",
       // Add any additional headers if necessary
     };
@@ -58,15 +51,9 @@ const NewPage = ({ navigation, route }) => {
         return response.json();
       })
       .then((data) => {
-        // Here, you can access the JSON data
-
         console.log("This is response " + data);
         // if (data.result) {
-        //   navigation.navigate("Home", { username });
-        // } else {
-        //   alert("Invalid database name or username or password");
-        // }
-        // Do further processing or update your React Native component state
+          navigation.navigate("Barcode");
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
