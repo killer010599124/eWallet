@@ -69,11 +69,11 @@ class APIController(http.Controller):
         search_param = []
         if(name == ''):
             if barcode == '': search_param = [] 
-            else: search_param = [('barcode', 'ilike','%' + barcode + '%')]
+            else: search_param = [('barcode', '=', barcode)]
         else:
             if barcode == '':
                 search_param = [('name', 'ilike', '%' + name + '%')] 
-            else: search_param = [('barcode', 'ilike', '%' + barcode + '%'), ('name', 'ilike', '%' + name + '%')]
+            else: search_param = [('barcode', '=', barcode), ('name', 'ilike', '%' + name + '%')]
         # Fetch products data
         products = request.env['product.product'].search(search_param)
         
@@ -121,26 +121,29 @@ class APIController(http.Controller):
 
         # Retrieve the JSON payload from the request
         name = request.params.get('name')
-        description_sale = request.params.get('description_sale')
+        # description_sale = request.params.get('description_sale')
         list_price = request.params.get('list_price')
         categ_id = request.params.get('categ_id')
+        default_code = request.params.get('default_code')
         barcode = request.params.get('barcode')
         standard_price = request.params.get('standard_price')
 
         json_product = {
             'name': name,
-            'description_sale': description_sale,
+            # 'description_sale': description_sale,
             'list_price': list_price,
             'standard_price': standard_price,
-            'barcode': barcode
+            'barcode': barcode,
+            'default_code': default_code
         }
         new_product = http.request.env['product.product'].create(json_product)
 
         return json.dumps({
             'id': new_product.id,
             'name': new_product.name,
-            'description': new_product.description_sale,
+            # 'description': new_product.description_sale,
             'list_price': new_product.list_price,
+            'default_code': new_product.default_code,
             'categories': [category.name for category in new_product.categ_id],
             'image_url': '/web/image/product.product/%s/image_1024' % new_product.id,
             'standard_price': new_product.standard_price,
@@ -166,17 +169,19 @@ class APIController(http.Controller):
         product_id = int(product_id)  # Convert the parameter to an integer
         
         name = request.params.get('name')
-        description_sale = request.params.get('description_sale')
+        # description_sale = request.params.get('description_sale')
         list_price = float(request.params.get('list_price'))
         standard_price = float(request.params.get('standard_price'))
         barcode = request.params.get('barcode')
+        default_code = request.params.get('default_code')
 
         json_product = {
             'name': name,
-            'description_sale': description_sale,
+            # 'description_sale': description_sale,
             'list_price': list_price,
             'standard_price': standard_price,
-            'barcode': barcode
+            'barcode': barcode,
+            'default_code': default_code
         }
         
         try:
@@ -185,9 +190,10 @@ class APIController(http.Controller):
             if(product.barcode == barcode):
                 json_product = {
                     'name': name,
-                    'description_sale': description_sale,
+                    # 'description_sale': description_sale,
                     'list_price': list_price,
                     'standard_price': standard_price,
+                    'default_code': default_code
                 }
 
             product.write(json_product)

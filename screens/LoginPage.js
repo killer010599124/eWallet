@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { View, Text, TextInput, Dimensions } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../Components/Button";
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, route }) => {
   const [database, setDatabase] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { url } = route.params;
 
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
@@ -20,31 +22,54 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     // Call server-side script to authenticate user
-    // fetch('http://your-server.com/authenticate', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     url: navigation.getParam('url'),
-    //     username,
-    //     password,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     if (responseJson.success) {
-    //       navigation.navigate('Main');
-    //     } else {
-    //       alert('Invalid username or password');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-    navigation.navigate("Home", {username});
-   
+
+    AsyncStorage.getItem("serverURL")
+      .then((url) => {
+        // console.log(url); // 'https://api.example.com'
+        const server_url = `${url}/web/session/authenticate`;
+        fetch(server_url, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "call",
+            params: {
+              db: `${database}`,
+              login: `${username}`,
+              password: `${password}`,
+              context: {},
+            },
+            id: 1,
+          }),
+        })
+          .then((response) => {
+            const session_id = response.headers.get("Set-Cookie");
+            console.log(session_id);
+            AsyncStorage.setItem("sessionId", session_id);
+            return response.json();
+
+          })
+          .then((data) => {
+            // Here, you can access the JSON data
+            
+            if (data.result) {
+              navigation.navigate("Home", { username });
+            } else {
+              alert("Invalid database name or username or password");
+            }
+            // Do further processing or update your React Native component state
+          })
+          .catch((error) => {
+            // Handle any errors that occurred during the request
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (

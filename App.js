@@ -31,7 +31,7 @@ export default function App() {
           <Stack.Screen name="New" component={NewPage} options={{ headerShown: false }}/>
           <Stack.Screen name="Scanner" component={ScannerPage} options={{ headerShown: false }}/>
           <Stack.Screen name="PriceUpdate" component={PriceUpdatePage} options={{ headerShown: false }}/>
-          <Stack.Screen name="Barcode" component={Barcode} options={{ headerShown: false }}/>
+          <Stack.Screen name="Barcode" component={Barcode} />
         </Stack.Navigator>
       </NavigationContainer>
   );

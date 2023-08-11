@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
   Text,
@@ -9,9 +10,10 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-
-const ProductScreen = ({navigation}) => {
+import Button from "../Components/Button";
+const ProductScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [serverUrl, setServerUrl] = useState('');
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
     setDimension(Dimensions.get("window"));
@@ -24,52 +26,57 @@ const ProductScreen = ({navigation}) => {
     };
   });
 
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "We Have New Products With Offers",
-      price: "$9.99",
-      costPrice: "$260.00",
-      barcode: "123456789",
-      image: require("../assets/shoe1.png"),
-    },
-    {
-      id: 2,
-      name: "We Have New Products With Offers",
-      price: "$19.99",
-      costPrice: "$260.00",
-      barcode: "987654321",
-      image: require("../assets/shoe2.png"),
-    },
-    {
-      id: 3,
-      name: "We Have New Products With Offers",
-      price: "$29.99",
-      costPrice: "$260.00",
-      barcode: "456789123",
-      image: require("../assets/shoe3.png"),
-    },
-    {
-      id: 4,
-      name: "We Have New Products With Offers",
-      price: "$29.99",
-      costPrice: "$260.00",
-      barcode: "456789123",
-      image: require("../assets/shoe4.png"),
-    },
-  ]);
-
+  const [products, setProducts] = useState([]);
+  AsyncStorage.getItem("serverURL").then((url) => {
+    setServerUrl(url);
+  })
   const handleSearch = (text) => {
     setSearchQuery(text);
-    const filteredProducts = products.filter((product) =>
-      product.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setProducts(filteredProducts);
+  };
+  const getProductData = () => {
+    AsyncStorage.getItem("serverURL")
+      .then((url) => {
+        // console.log(url); // 'https://api.example.com'
+        AsyncStorage.getItem("sessionId").then((sid) => {
+          const server_url = `${url}/api/v1/products?name=${searchQuery}&barcode=`;
+          const sessionID = `${sid}`;
+          
+
+          fetch(server_url, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Cookie: `session_id=${sessionID}`,
+            },
+          })
+            .then((response) => {
+              // console.log(response);
+              return response.json();
+            })
+            .then((data) => {
+              // Here, you can access the JSON data
+              // console.log(data);
+              // const filteredProducts = data.filter((product) =>
+              //   product.name.toLowerCase().includes(searchQuery.toLowerCase())
+              // );
+              setProducts(data);
+            })
+            .catch((error) => {
+              // Handle any errors that occurred during the request
+              console.error(error);
+            });
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   const handleProductPress = (item) => {
-    navigation.navigate('Details', { product: JSON.stringify(item) });
+    navigation.navigate("Details", { product: JSON.stringify(item) });
   };
   const renderItem = ({ item }) => (
+  
     <TouchableOpacity
       style={{
         height: dimension.width * 0.23,
@@ -79,13 +86,12 @@ const ProductScreen = ({navigation}) => {
         borderRadius: 10,
         marginTop: 10,
       }}
-      onPress={ () => {
-        handleProductPress(item)
+      onPress={() => {
+        handleProductPress(item);
       }}
-      
     >
       <Image
-        source={item.image}
+        source = {{ uri: `${serverUrl}${item.image_url}` }}
         style={{
           width: dimension.width * 0.2,
           height: dimension.width * 0.2,
@@ -95,21 +101,21 @@ const ProductScreen = ({navigation}) => {
           borderRadius: 10,
         }}
       />
-      <View style={{ marginLeft: 40 }}>
+      <View style={{ marginLeft: 10 }}>
         <Text
           style={{
             color: "#0D6EFD",
             fontSize: 12,
-            width: dimension.width * 0.4,
+            width: dimension.width * 0.7,
           }}
         >
           {item.name}
         </Text>
         <Text style={{ fontSize: 12 }}>{item.barcode}</Text>
         <View style={{ display: "flex", flexDirection: "row" }}>
-          <Text style={{ fontSize: 12 }}>{item.price}</Text>
-          <Text style={{ fontSize: 12, marginLeft: dimension.width * 0.2 }}>
-            {item.costPrice}
+          <Text style={{ fontSize: 12 }}>${item.standard_price}</Text>
+          <Text style={{ fontSize: 12, marginLeft: dimension.width * 0.4 }}>
+            ${item.list_price}
           </Text>
         </View>
       </View>
@@ -131,7 +137,7 @@ const ProductScreen = ({navigation}) => {
             borderColor: "white",
             borderRadius: 20,
             marginTop: dimension.height * 0.08,
-            fontSize : 12
+            fontSize: 12,
           }}
           placeholder="Looking for shoes"
           value={searchQuery}
@@ -145,20 +151,56 @@ const ProductScreen = ({navigation}) => {
               height: 15,
               position: "absolute",
               marginTop: 18,
-              marginLeft: -dimension.width * 0.85,
+              marginLeft: -dimension.width * 0.75,
               zIndex: 99,
             }}
           />
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#0D6EFD",
+            borderRadius: 10,
+            height: dimension.height * 0.04,
+            width: dimension.height * 0.04,
+            borderRadius: dimension.height * 0.02,
+            marginTop: dimension.height * 0.08,
+            marginLeft: 10,
+            alignItems: "center",
+            // position: "absolute",
+          }}
+        >
+          <Image
+            source={require("../assets/VectorW.png")}
+            style={{
+              width: "50%",
+              height: "50%",
+              marginTop: dimension.height * 0.01,
+            }}
+          />
+        </TouchableOpacity>
       </View>
-      <FlatList
-        data={products}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      <View>
+        <FlatList
+          data={products}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          style={{ height: dimension.height * 0.7 }}
+        />
+      </View>
 
-      <View style= {{alignItems :'center'}}>
-      <TouchableOpacity
+      <View
+        style={{
+          position: "absolute",
+          marginTop: dimension.height * 0.83,
+          alignItems: "center",
+          width: dimension.width,
+        }}
+      >
+        <Button title="Search" onPress={getProductData} />
+      </View>
+
+      {/* <View style={{ alignItems: "center" }}>
+        <TouchableOpacity
           style={{
             backgroundColor: "#0D6EFD",
             borderRadius: 10,
@@ -166,7 +208,7 @@ const ProductScreen = ({navigation}) => {
             width: dimension.height * 0.08,
             borderRadius: dimension.height * 0.04,
             alignItems: "center",
-            position : 'absolute'
+            position: "absolute",
           }}
         >
           <Image
@@ -180,9 +222,9 @@ const ProductScreen = ({navigation}) => {
         </TouchableOpacity>
         <Image
           source={require("../assets/bottomBG.png")}
-          style={{ width: dimension.width, }}
+          style={{ width: dimension.width }}
         ></Image>
-      </View>
+      </View> */}
     </View>
   );
 };

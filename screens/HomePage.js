@@ -49,15 +49,13 @@ const HomeScreen = ({ navigation, route }) => {
         <TouchableOpacity
           style={{
             backgroundColor: "#F7EFEE",
-            marginTop: dimension.height * 0.1,
+            marginTop: dimension.height * 0.02,
             height: dimension.height * 0.15,
             borderRadius: 10,
             alignItems: "center",
           }}
           underlayColor="#fff"
-          onPress={() => {
-            navigation.navigate('Product');
-          }}
+         
         >
           <TouchableOpacity
             style={{
@@ -67,6 +65,9 @@ const HomeScreen = ({ navigation, route }) => {
               height: dimension.height * 0.08,
               width: dimension.height * 0.08,
               alignItems: "center",
+            }}
+            onPress={() => {
+              navigation.navigate("Product");
             }}
           >
             <Image
@@ -82,96 +83,86 @@ const HomeScreen = ({ navigation, route }) => {
             Product
           </Text>
         </TouchableOpacity>
-        <View
+        <TouchableOpacity
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: dimension.height * 0.02,
+            backgroundColor: "#F7EFEE",
+            height: dimension.height * 0.15,
+            marginTop: dimension.height * 0.01,
+          
+            borderRadius: 10,
+            alignItems: "center",
           }}
+          underlayColor="#fff"
+         
         >
           <TouchableOpacity
             style={{
-              backgroundColor: "#F7EFEE",
-              height: dimension.height * 0.15,
-              width: "45%",
+              backgroundColor: "#B0EDF3",
               borderRadius: 10,
+              marginTop: dimension.height * 0.02,
+              height: dimension.height * 0.08,
+              width: dimension.height * 0.08,
               alignItems: "center",
             }}
-            underlayColor="#fff"
             onPress={() => {
               // navigation.navigate('Scanner');
-              navigation.navigate('Barcode');
+              navigation.navigate("Barcode");
             }}
           >
-            <TouchableOpacity
+            <Image
+              source={require("../assets/tag.png")}
               style={{
-                backgroundColor: "#B0EDF3",
-                borderRadius: 10,
-                marginTop: dimension.height * 0.02,
-                height: dimension.height * 0.08,
-                width: dimension.height * 0.08,
-                alignItems: "center",
+                width: "60%",
+                height: "60%",
+                marginTop: dimension.height * 0.015,
               }}
-            >
-              <Image
-                source={require("../assets/tag.png")}
-                style={{
-                  width: "60%",
-                  height: "60%",
-                  marginTop: dimension.height * 0.015,
-                }}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{ color: "#363636", textAlign: "center", fontSize: 12 }}
-            >
-              Price Update
-            </Text>
+            />
           </TouchableOpacity>
+          <Text style={{ color: "#363636", textAlign: "center", fontSize: 12 }}>
+            Price Update
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#F7EFEE",
+            height: dimension.height * 0.15,
+            marginTop: dimension.height * 0.01,
+            borderRadius: 10,
+            alignItems: "center",
+          }}
+          underlayColor="#fff"
+        >
           <TouchableOpacity
             style={{
-              backgroundColor: "#F7EFEE",
-
-              height: dimension.height * 0.15,
+              backgroundColor: "#B0EDF3",
               borderRadius: 10,
-              width: "45%",
+              marginTop: dimension.height * 0.02,
+              height: dimension.height * 0.08,
+              width: dimension.height * 0.08,
               alignItems: "center",
             }}
-            underlayColor="#fff"
           >
-            <TouchableOpacity
+            <Image
+              source={require("../assets/print.png")}
               style={{
-                backgroundColor: "#B0EDF3",
-                borderRadius: 10,
-                marginTop: dimension.height * 0.02,
-                height: dimension.height * 0.08,
-                width: dimension.height * 0.08,
-                alignItems: "center",
+                width: "60%",
+                height: "60%",
+                marginTop: dimension.height * 0.015,
               }}
-            >
-              <Image
-                source={require("../assets/print.png")}
-                style={{
-                  width: "60%",
-                  height: "60%",
-                  marginTop: dimension.height * 0.015,
-                }}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{ color: "#363636", textAlign: "center", fontSize: 12 }}
-            >
-              Product Print
-            </Text>
+            />
           </TouchableOpacity>
-        </View>
+          <Text style={{ color: "#363636", textAlign: "center", fontSize: 12 }}>
+            Product Print
+          </Text>
+        </TouchableOpacity>
+        
       </View>
       <View style={{ alignItems: "center" }}>
         <TouchableOpacity
           style={{
             backgroundColor: "#D5D5DC",
             borderRadius: 10,
-            marginTop: dimension.height * 0.2,
+            marginTop: dimension.height * 0.1,
             height: dimension.height * 0.08,
             width: dimension.height * 0.08,
             borderRadius: dimension.height * 0.04,

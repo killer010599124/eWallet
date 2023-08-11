@@ -8,20 +8,22 @@ const PriceUpdatePage = ({navigation, route }) => {
   const onChange = () => {
     setDimension(Dimensions.get("window"));
   };
+
+  const product = route.params.data;
+  console.log(product[0].name);
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
       <View style={{ width: "60%", marginLeft: "5%", marginTop : dimension.height * 0.15 }}>
-        <Text style={{ ...styles.name, color: "#707B81", fontSize: 14 }}>
-          FURN_000778
-        </Text>
-        <Text style={styles.name}>Nike Air Max 270</Text>
-        <Text style={styles.barcode}>8600039959995995</Text>
-        <TextInput style={styles.name}>$179.39</TextInput>
+       
+        <Text style={styles.name}>{product[0].name}</Text>
+        <Text style={styles.barcode}>{product[0].barcode}</Text>
+        <TextInput style={styles.name}>${product[0].list_price}</TextInput>
+        <Text style={styles.barcode}>${product[0].standard_price}</Text>
       </View>
 
       <Button
         title="Done"
-        onPress={() => navigation.navigate('Product')}
+        onPress={() => navigation.navigate('Barcode')}
         style={{
           backgroundColor: "#0D6EFD",
         }}

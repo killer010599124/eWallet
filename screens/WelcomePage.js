@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text, TextInput,Dimensions } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import Button from '../Components/Button';
 const WelcomeScreen = ({ navigation }) => {
 
@@ -29,7 +31,11 @@ const WelcomeScreen = ({ navigation }) => {
       />
       <Button
         title="START"
-        onPress={() => navigation.navigate('Login', { url })}
+        onPress={() => {
+          AsyncStorage.setItem("serverURL", url);
+          navigation.navigate('Login', { url });
+        }
+        }
         style = {{backgroundColor : '#0D6EFD' , marginTop : dimension.height * 0.1 ,}}
       />
     </View>

@@ -10,11 +10,23 @@ import {
 import Button from "../Components/Button";
 import { TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const EditPage = ({ navigation, route }) => {
   const { parsedProduct } = route.params;
   //   const parsedProduct = product;
 
   const [dimension, setDimension] = useState(Dimensions.get("window"));
+  const [serverUrl, setServerUrl] = useState("");
+  AsyncStorage.getItem("serverURL").then((url) => {
+    setServerUrl(url);
+  });
+
+  const [name, setName] = useState(parsedProduct.name);
+  const [dcode, setDcode] = useState(parsedProduct.default_code);
+  const [barcode, setBarcode] = useState(parsedProduct.barcode);
+  const [saleprice, setSaleprice] = useState(parsedProduct.list_price.toString());
+  const [cost, setCost] = useState(parsedProduct.standard_price.toString());
+
   const onChange = () => {
     setDimension(Dimensions.get("window"));
   };
@@ -22,27 +34,27 @@ const EditPage = ({ navigation, route }) => {
     {
       leftIcon: require("../assets/nameIcon.png"),
       description: "Name",
-      rightInfo: "Nike Air Max 270 Essential",
+      rightInfo: parsedProduct.name,
     },
     {
       leftIcon: require("../assets/IRIcon.png"),
       description: "Internal reference",
-      rightInfo: "FRUN_000778",
+      rightInfo: parsedProduct.default_code,
     },
     {
       leftIcon: require("../assets/barcodeIcon.png"),
       description: "Barcode",
-      rightInfo: "8600201741241414",
+      rightInfo: parsedProduct.barcode,
     },
     {
       leftIcon: require("../assets/spIcon.png"),
       description: "Sales Price",
-      rightInfo: "$179.39",
+      rightInfo: `$${parsedProduct.list_price}`,
     },
     {
       leftIcon: require("../assets/costIcon.png"),
       description: "Cost",
-      rightInfo: "$260.39",
+      rightInfo: `$${parsedProduct.standard_price}`,
     },
   ];
   const ListItem = ({ leftIcon, rightInfo, description }) => {
@@ -56,25 +68,167 @@ const EditPage = ({ navigation, route }) => {
         />
         <View>
           <Text style={{ color: "#A3A3A3", fontSize: 12 }}>{description}</Text>
-          <TextInput>{rightInfo}</TextInput>
+          <TextInput onChangeText={(text) => setUrl(text)} value={url}>
+            {rightInfo}
+          </TextInput>
         </View>
       </View>
     );
   };
+
+  const updateData = () => {
+    // var formdata = new FormData();
+    // formdata.append("name", name);
+    // formdata.append("list_price", parseFloat(saleprice));
+    // formdata.append("standard_price", parseFloat(cost));
+    // formdata.append("product_id", parsedProduct.id);
+    // formdata.append("barcode", barcode);
+    // formdata.append("categ_id", "");
+    // formdata.append("default_code", dcode);
+    const headers = {
+      'Content-Type': 'application/json',
+      // Add any additional headers if necessary
+    };
+  
+    // Create the request payload
+    const payload = {
+        name : name,
+        list_price : saleprice,
+        standard_price : cost,
+        product_id : parsedProduct.id,
+        barcode : barcode,
+        default_code : dcode
+    };
+    fetch(`${serverUrl}/api/update/product/`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(payload)
+      // body: JSON.stringify({
+      //   name : name,
+      //   list_price : parseFloat(saleprice),
+      //   standard_price : parseFloat(cost),
+      //   product_id : parsedProduct.id,
+      //   barcode : barcode,
+      //   default_code : dcode
+      // }),
+      // body : formdata,
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // Here, you can access the JSON data
+
+        console.log("This is response " + data);
+        // if (data.result) {
+        //   navigation.navigate("Home", { username });
+        // } else {
+        //   alert("Invalid database name or username or password");
+        // }
+        // Do further processing or update your React Native component state
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error(error);
+      });
+  };
+
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
       <View style={styles.image}>
-        <Image source={parsedProduct.image} style={{width : '100%', height : '100%'}} />
+        <Image
+          source={{ uri: `${serverUrl}${parsedProduct.image_url}` }}
+          style={{ width: "100%", height: "100%" }}
+        />
       </View>
-      {listItemData.map((item, index) => (
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+      >
+        <Image
+          source={require("../assets/nameIcon.png")}
+          style={{ width: 50, height: 50, marginRight: 10 }}
+        />
+        <View>
+          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Name</Text>
+          <TextInput onChangeText={(text) => setName(text)} value={name} />
+        </View>
+      </View>
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+      >
+        <Image
+          source={require("../assets/IRIcon.png")}
+          style={{ width: 50, height: 50, marginRight: 10 }}
+        />
+        <View>
+          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>
+            Internal reference
+          </Text>
+          <TextInput onChangeText={(text) => setDcode(text)} value={dcode} />
+        </View>
+      </View>
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+      >
+        <Image
+          source={require("../assets/barcodeIcon.png")}
+          style={{ width: 50, height: 50, marginRight: 10 }}
+        />
+        <View>
+          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Barcode</Text>
+          <TextInput
+            onChangeText={(text) => setBarcode(text)}
+            value={barcode}
+          />
+        </View>
+      </View>
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+      >
+        <Image
+          source={require("../assets/spIcon.png")}
+          style={{ width: 50, height: 50, marginRight: 10 }}
+        />
+        <View>
+          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Sales Price</Text>
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Text style={{ marginTop: 3 }}>$</Text>
+            <TextInput
+              onChangeText={(text) => setSaleprice(text)}
+              value={saleprice.toString()}
+            />
+          </View>
+        </View>
+      </View>
+
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+      >
+        <Image
+          source={require("../assets/costIcon.png")}
+          style={{ width: 50, height: 50, marginRight: 10 }}
+        />
+        <View>
+          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Cost</Text>
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Text style={{ marginTop: 3 }}>$</Text>
+            <TextInput onChangeText={(text) => setCost(text)} value={cost.toString()} />
+          </View>
+        </View>
+      </View>
+      {/* {listItemData.map((item, index) => (
         <ListItem
           key={index}
           leftIcon={item.leftIcon}
           rightInfo={item.rightInfo}
           description={item.description}
         />
-      ))}
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      ))} */}
+      {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
           source={require("../assets/tagIcon.png")}
           style={{ width: 50, height: 50, marginRight: 10 }}
@@ -112,15 +266,27 @@ const EditPage = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </View> */}
 
-      <Button
-        title="Done"
-        onPress={() => navigation.navigate("Empty")}
+      <View
         style={{
-          backgroundColor: "#0D6EFD",
+          position: "absolute",
+          alignItems: "center",
+          width: dimension.width,
+          marginTop: dimension.height * 0.8,
         }}
-      />
+      >
+        <Button
+          title="Done"
+          onPress={() => {
+            updateData();
+            navigation.navigate("Product");
+          }}
+          style={{
+            backgroundColor: "#0D6EFD",
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -144,13 +310,13 @@ const styles = StyleSheet.create({
     color: "#707B81",
     fontSize: 12,
     fontWeight: "bold",
-
   },
 
   image: {
     // marginLeft : '10%',
     alignSelf: "center",
-    marginTop: "25%",
+    marginTop: "20%",
+    marginBottom: "3%",
     width: "50%",
     height: "20%",
     resizeMode: "contain",
