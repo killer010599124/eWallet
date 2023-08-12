@@ -1,29 +1,90 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Dimensions, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TextInput,
+} from "react-native";
 import Button from "../Components/Button";
 import { TouchableOpacity } from "react-native";
-const PriceUpdatePage = ({navigation, route }) => {
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+const PriceUpdatePage = ({ navigation, route }) => {
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
     setDimension(Dimensions.get("window"));
   };
-
   const product = route.params.data;
-  console.log(product[0].name);
+  const [serverUrl, setServerUrl] = useState("");
+  AsyncStorage.getItem("serverURL").then((url) => {
+    setServerUrl(url);
+  });
+
+  const [saleprice, setSaleprice] = useState(product[0].list_price.toString());
+  const updatePrice = () => {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      // Add any additional headers if necessary
+    };
+
+    // Create the request payload
+    const payload = {
+      name: product[0].name,
+      list_price: saleprice,
+      standard_price: product[0].standard_price,
+      product_id: product[0].id,
+      barcode: product[0].barcode,
+      default_code: product[0].default_code,
+    };
+    console.log(payload);
+    fetch(`${serverUrl}/api/update/product/`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // Here, you can access the JSON data
+
+        console.log("This is response " + JSON.stringify(data));
+
+        navigation.navigate("Barcode");
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request
+        console.error(error);
+      });
+  };
+
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
-      <View style={{ width: "60%", marginLeft: "5%", marginTop : dimension.height * 0.15 }}>
-       
+      <View
+        style={{
+          width: "60%",
+          marginLeft: "5%",
+          marginTop: dimension.height * 0.15,
+        }}
+      >
         <Text style={styles.name}>{product[0].name}</Text>
         <Text style={styles.barcode}>{product[0].barcode}</Text>
-        <TextInput style={styles.name}>${product[0].list_price}</TextInput>
+        <TextInput
+          style={styles.name}
+          onChangeText={(text) => setSaleprice(text)}
+          value={saleprice}
+        />
         <Text style={styles.barcode}>${product[0].standard_price}</Text>
       </View>
 
       <Button
         title="Done"
-        onPress={() => navigation.navigate('Barcode')}
+        onPress={() => {
+          updatePrice();
+          navigation.navigate("Barcode");
+        }}
         style={{
           backgroundColor: "#0D6EFD",
         }}

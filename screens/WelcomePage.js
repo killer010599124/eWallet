@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text, TextInput,Dimensions } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useKeepAwake } from 'expo-keep-awake';
 
 import Button from '../Components/Button';
 const WelcomeScreen = ({ navigation }) => {
 
+  useKeepAwake();
   
   const [url, setUrl] = useState('');
   const [dimension, setDimension] = useState(Dimensions.get('window'));

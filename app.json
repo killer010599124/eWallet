@@ -30,15 +30,24 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.icetulip.eWallet"
+      "versionCode": 2,
+      "config": {
+        "googleMobileAdsAppId":"ca-app-pub-349893000004~000000"
+      },
+      "package": "com.icetulip.eWallet",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "f51efd49-8841-4308-a446-93386e22f9e2"
+        "projectId": "a3125cc3-2d14-4285-8466-a80251e356d3"
       }
-    }
+    },
+    "owner": "killerrampage"
   }
 }
