@@ -23,7 +23,7 @@ import Barcode from "@kichiyaki/react-native-barcode-generator";
 import NumericPad from "react-native-numeric-pad";
 import Icon from "react-native-vector-icons/Ionicons";
 LogBox.ignoreAllLogs();
-const ScanPage = ({ navigation }) => {
+const PrintScanPage = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanData, setScanData] = useState("00000000000");
@@ -448,7 +448,7 @@ const ScanPage = ({ navigation }) => {
         }}
       >
         <CustomHeader
-          title="Scan products"
+          title="Print products"
           iconName=""
           onBackPress={() => {
             navigation.navigate("Home");
@@ -551,4 +551,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScanPage;
+export default PrintScanPage;

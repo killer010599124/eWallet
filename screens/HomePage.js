@@ -122,6 +122,7 @@ const HomeScreen = ({ navigation, route }) => {
                 height: "60%",
                 marginTop: dimension.height * 0.015,
               }}
+              
             />
           </TouchableOpacity>
           <Text style={{ color: "#363636", textAlign: "center", fontSize: 14,marginTop : dimension.height * 0.01 }}>
@@ -136,6 +137,7 @@ const HomeScreen = ({ navigation, route }) => {
             borderRadius: 10,
             alignItems: "center",
           }}
+         
           underlayColor="#fff"
         >
           <TouchableOpacity
@@ -146,6 +148,10 @@ const HomeScreen = ({ navigation, route }) => {
               height: dimension.height * 0.08,
               width: dimension.height * 0.08,
               alignItems: "center",
+            }}
+            onPress={() => {
+              // navigation.navigate('Scanner');
+              navigation.navigate("PrintScan");
             }}
           >
             <Image

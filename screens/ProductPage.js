@@ -17,7 +17,7 @@ const ProductScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [flag, setFlag] = useState(false);
   const [scanData, setScanData] = useState("");
-  const [previousScreen, setPreviousScreen] = useState('Product');
+  const [previousScreen, setPreviousScreen] = useState("Product");
   const [serverUrl, setServerUrl] = useState("");
   const [dimension, setDimension] = useState(Dimensions.get("window"));
 
@@ -149,6 +149,7 @@ const ProductScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: "white" }}>
+      
       <View
         style={{
           position: "absolute",
@@ -164,7 +165,7 @@ const ProductScreen = ({ navigation }) => {
             navigation.navigate("Home");
           }}
           onFunctionPress={() => {
-            navigation.navigate('New', {scanData, previousScreen})
+            navigation.navigate("New", { scanData, previousScreen });
           }}
         />
       </View>

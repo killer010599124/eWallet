@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,11 @@ import {
 import Button from "../Components/Button";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Barcode from "@kichiyaki/react-native-barcode-generator";
+import CustomHeader from "../Components/header";
+import NumericPad from "react-native-numeric-pad";
+import Icon from "react-native-vector-icons/Ionicons";
+
 const PriceUpdatePage = ({ navigation, route }) => {
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
@@ -21,7 +26,13 @@ const PriceUpdatePage = ({ navigation, route }) => {
     setServerUrl(url);
   });
 
-  const [saleprice, setSaleprice] = useState(product[0].list_price.toString());
+  const [amount, setAmount] = useState("");
+  const numpadRef = useRef(null);
+
+  const [saleprice, setSaleprice] = useState(null);
+  useEffect(() => {
+    setSaleprice(product[0].list_price.toString())
+  },[])
   const updatePrice = () => {
     const headers = {
       Accept: "application/json",
@@ -59,36 +70,120 @@ const PriceUpdatePage = ({ navigation, route }) => {
         console.error(error);
       });
   };
+  const BarcodeGenerator = () => {
+    const barcodeNumber = product[0].barcode; // Replace with your barcode number
 
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          width: "100%",
+          marginTop: dimension.height * 0.05,
+        }}
+      >
+        <Barcode
+          format="CODE128"
+          value={barcodeNumber}
+          text={barcodeNumber}
+          style={{}}
+          textStyle={{ fontWeight: "bold", fontSize: 18 }}
+          maxWidth={dimension.width * 0.8}
+          width={dimension.width * 0.8}
+          height={dimension.height * 0.1}
+        />
+      </View>
+    );
+  };
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
       <View
         style={{
-          width: "60%",
-          marginLeft: "5%",
+          position: "absolute",
+          width: dimension.width,
+          marginTop: dimension.height * 0.05,
+        }}
+      >
+        <CustomHeader
+          title="Price update"
+          iconName="print-outline"
+          onBackPress={() => {
+            navigation.navigate("Barcode");
+          }}
+        />
+      </View>
+      <View
+        style={{
+          width: "100%",
           marginTop: dimension.height * 0.15,
+          alignItems: "center",
         }}
       >
         <Text style={styles.name}>{product[0].name}</Text>
-        <Text style={styles.barcode}>{product[0].barcode}</Text>
-        <TextInput
-          style={styles.name}
-          onChangeText={(text) => setSaleprice(text)}
-          value={saleprice}
-        />
+        {BarcodeGenerator()}
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            marginTop: dimension.height * 0.02,
+          }}
+        >
+          <Text style={styles.name}>$</Text>
+          <Text style={styles.name}>{saleprice}</Text>
+          {/* <TextInput
+            style={{ ...styles.name }}
+            // onChangeText={(text) => setSaleprice(text)}
+            showSoftInputOnFocus={false}
+            maxLength={8}
+            autoFocus={true}
+            editable={false}
+            selectTextOnFocus={false}
+            value={saleprice}
+          /> */}
+        </View>
+
         <Text style={styles.barcode}>${product[0].standard_price}</Text>
       </View>
-
-      <Button
-        title="Done"
-        onPress={() => {
-          updatePrice();
-          navigation.navigate("Barcode");
-        }}
-        style={{
-          backgroundColor: "#0D6EFD",
+      <NumericPad
+        style={{ marginTop: dimension.height * 0.1 }}
+        ref={numpadRef}
+        numLength={8}
+        buttonSize={60}
+        activeOpacity={0.1}
+        onValueChange={(value) => setSaleprice(value)}
+        allowDecimal={true}
+        // Try them to understand each area :)
+        // style={{ backgroundColor: 'black', paddingVertical: 12 }}
+        // buttonAreaStyle={{ backgroundColor: 'gray' }}
+        // buttonItemStyle={{ backgroundColor: 'red' }}
+        rightBottomButton={
+          <Icon name="ios-backspace-outline" size={28} color={"#000"} />
+        }
+        onRightBottomButtonPress={() => {
+          numpadRef.current.clear();
         }}
       />
+      <View
+        style={{
+          position: "absolute",
+          backgroundColor: "white",
+          marginBottom: 16,
+          width: dimension.width,
+          alignItems: "center",
+
+          marginTop: dimension.height * 0.93,
+        }}
+      >
+        <Button
+          title="OK"
+          onPress={() => {
+            updatePrice();
+            navigation.navigate("Barcode");
+          }}
+          style={{
+            backgroundColor: "#0D6EFD",
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -124,12 +219,11 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
   },
   barcode: {
-    fontSize: 12,
+    fontSize: 18,
     color: "#2B2B2B",
     left: 0,
   },

@@ -13,7 +13,8 @@ import NoResultPage from "./screens/EmptyPage";
 import NewPage from "./screens/NewPage";
 import ScannerPage from "./screens/ScanPage";
 import PriceUpdatePage from "./screens/PriceUpdate";
-import Barcode from "./screens/Barcode";
+import ScanPage from "./screens/Barcode";
+import PrintScanPage from "./screens/PrintScan";
 // Import any other screens you want to use
 const Stack = createStackNavigator();
 export default function App() {
@@ -31,7 +32,8 @@ export default function App() {
           <Stack.Screen name="New" component={NewPage} options={{ headerShown: false }}/>
           <Stack.Screen name="Scanner" component={ScannerPage} options={{ headerShown: false }}/>
           <Stack.Screen name="PriceUpdate" component={PriceUpdatePage} options={{ headerShown: false }}/>
-          <Stack.Screen name="Barcode" component={Barcode} />
+          <Stack.Screen name="Barcode" component={ScanPage}  options={{ headerShown: false }}/>
+          <Stack.Screen name="PrintScan" component={PrintScanPage}  options={{ headerShown: false }}/>
         </Stack.Navigator>
       </NavigationContainer>
   );
