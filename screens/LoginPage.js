@@ -1,18 +1,32 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { View, Text, TextInput, Dimensions } from "react-native";
+import { View, Text, TextInput, Dimensions, StyleSheet } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../Components/Button";
+import { ListItem } from "react-native-elements";
 const LoginScreen = ({ navigation, route }) => {
   const [database, setDatabase] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { url } = route.params;
+  const { list } = route.params;
+  const databaseList = list.map((str, key) => {
+    return { label: str , value : str};
+  });
+  const [items, setItems] = useState(databaseList);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  console.log(databaseList);
 
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
     setDimension(Dimensions.get("window"));
   };
+  const [selectedValue, setSelectedValue] = useState("");
 
+  const handleValueChange = (value) => {
+    setSelectedValue(value);
+  };
   useEffect(() => {
     Dimensions.addEventListener("change", onChange);
     return () => {
@@ -50,11 +64,10 @@ const LoginScreen = ({ navigation, route }) => {
             console.log(session_id);
             AsyncStorage.setItem("sessionId", session_id);
             return response.json();
-
           })
           .then((data) => {
             // Here, you can access the JSON data
-            
+
             if (data.result) {
               navigation.navigate("Home", { username });
             } else {
@@ -83,41 +96,51 @@ const LoginScreen = ({ navigation, route }) => {
       <Text
         style={{
           textAlign: "center",
-          fontSize: 30,
-          marginTop: dimension.height * 0.1,
+          fontSize: dimension.height * 0.05,
+          marginTop: dimension.height * 0.15,
         }}
       >
         Welcome Back!
       </Text>
-      <Text style={{ textAlign: "center", color: "#707B81", fontSize: 14 }}>
+      <Text style={{ textAlign: "center", color: "#707B81", fontSize: 20 }}>
         {" "}
         Choose Your Database AND Insert Your Login And Password{" "}
       </Text>
       <Text
         style={{
           color: "#2B2B2B",
-          fontSize: 12,
+          fontSize: 14,
           marginTop: dimension.height * 0.05,
         }}
       >
         {" "}
         Database{" "}
       </Text>
-      <TextInput
-        placeholder="xxxxxx"
-        onChangeText={(text) => setDatabase(text)}
-        value={database}
+        
+      <DropDownPicker
         style={{
-          fontSize: 12,
+          fontSize: dimension.height * 0.025,
+          borderRadius: 15,
+          height: dimension.height * 0.04,
+          paddingHorizontal: 5,
           backgroundColor: "#F7F7F9",
-          marginTop: dimension.height * 0.01,
+          zIndex : 999
         }}
-      />
+        placeholder="Select an database"
+        open={open}
+        value={value}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        items={items}
+        onChangeItem={(item) => setSelectedValue(item.value)}
+      ></DropDownPicker>
       <Text
         style={{
           color: "#2B2B2B",
-          fontSize: 12,
+          fontSize: 14,
           marginTop: dimension.height * 0.03,
+          zIndex : -3
         }}
       >
         {" "}
@@ -128,16 +151,21 @@ const LoginScreen = ({ navigation, route }) => {
         onChangeText={setUsername}
         value={username}
         style={{
-          fontSize: 12,
+          fontSize: dimension.height * 0.025,
+          borderRadius: 5,
+          paddingHorizontal: 5,
+          height: dimension.height * 0.05,
           backgroundColor: "#F7F7F9",
           marginTop: dimension.height * 0.01,
+          zIndex : -3
         }}
       />
       <Text
         style={{
           color: "#2B2B2B",
-          fontSize: 12,
+          fontSize: 14,
           marginTop: dimension.height * 0.03,
+          zIndex : -3
         }}
       >
         {" "}
@@ -149,14 +177,44 @@ const LoginScreen = ({ navigation, route }) => {
         value={password}
         secureTextEntry={true}
         style={{
-          fontSize: 12,
+          fontSize: dimension.height * 0.025,
+          borderRadius: 5,
+          height: dimension.height * 0.05,
+          paddingHorizontal: 5,
           backgroundColor: "#F7F7F9",
           marginTop: dimension.height * 0.01,
+          zIndex : -3
         }}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <View
+        style={{
+          position: "absolute",
+          backgroundColor: "white",
+          marginBottom: 16,
+          width: dimension.width,
+          alignItems: "center",
+
+          marginTop: dimension.height * 0.9,
+        }}
+      >
+        <Button title="Login" onPress={handleLogin} />
+      </View>
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  selectInput: {
+    width: 200,
+    borderColor: "gray",
+    borderWidth: 1,
+    backgroundColor: "#F7F7F9",
+  },
+  selectedValue: {
+    marginTop: 20,
+  },
+});
 export default LoginScreen;
