@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import Button from "../Components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native";
+import Barcode from "@kichiyaki/react-native-barcode-generator";
+import CustomHeader from "../Components/header";
 const ProductDetailPage = ({ navigation, route }) => {
   const { product } = route.params;
   const parsedProduct = JSON.parse(product);
@@ -16,12 +18,35 @@ const ProductDetailPage = ({ navigation, route }) => {
     setDimension(Dimensions.get("window"));
   };
   // console.log(`${serverUrl}${parsedProduct.image_url}`);
-  
+  const BarcodeGenerator = () => {
+    const barcodeNumber = parsedProduct.barcode; // Replace with your barcode number
+
+    return (
+      <View style = {{alignItems : 'center', width :  "100%", marginTop : dimension.height * 0.05}}>
+        <Barcode
+          format="CODE128"
+          value={barcodeNumber}
+          text={barcodeNumber}
+          style={{ }}
+          textStyle={{fontWeight:'bold', fontSize : 18}}
+          maxWidth={dimension.width * 0.8}
+          width={dimension.width * 0.8}
+          height={dimension.height * 0.1}
+        />
+      </View>
+    );
+  };
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
-      <Text style={styles.price}>${parsedProduct.standard_price}</Text>
-      <Text style={styles.costPrice}>${parsedProduct.list_price}</Text>
-
+      <View
+        style={{
+          position: "absolute",
+          width: dimension.width,
+          marginTop: dimension.height * 0.05,
+        }}
+      >
+        <CustomHeader title="Edit" iconName="print-outline" />
+      </View>
       <Image
         source={{ uri: `${serverUrl}${parsedProduct.image_url}` }}
         style={styles.image}
@@ -30,20 +55,38 @@ const ProductDetailPage = ({ navigation, route }) => {
         <TouchableOpacity style = {{backgroundColor : '#54DA92',  borderRadius : 20, paddingHorizontal : 3}}><Text style = {{fontWeight : 'bold',fontSize : 12}}>fruniture</Text></TouchableOpacity>
         <TouchableOpacity style = {{backgroundColor : '#FFE382', borderRadius : 20, paddingHorizontal : 3, marginLeft : 2}}><Text style = {{fontWeight : 'bold',}}>kids</Text></TouchableOpacity>
       </View> */}
-      <View style={{ width: "60%", marginLeft: "5%" }}>
+      <View style={{ width: "100%", paddingHorizontal : dimension.width * 0.05, }}>
         <Text style={{ ...styles.name, color: "#707B81", fontSize: 14 }}>
           {parsedProduct.default_code}
         </Text>
         <Text style={styles.name}>{parsedProduct.name}</Text>
-        <Text style={styles.barcode}>{parsedProduct.barcode}</Text>
+
+        {BarcodeGenerator()}
+
+        {/* <View style={{ alignItems: "center", width: dimension.width }}>
+          
+          <Image
+            source={{ uri: `${serverUrl}${parsedProduct.image_url}` }}
+            style={styles.image}
+          />
+          <Text style={{ ...styles.barcode, textAlign: "center" }}>
+            {parsedProduct.barcode}
+          </Text>
+        </View> */}
+
+        <Text style={styles.price}>${parsedProduct.standard_price}</Text>
+        <Text style={styles.costPrice}>${parsedProduct.list_price}</Text>
       </View>
 
       <View
         style={{
           position: "absolute",
-          alignItems: "center",
+          backgroundColor: "white",
+          marginBottom: 16,
           width: dimension.width,
-          marginTop: dimension.height * 0.8,
+          alignItems: "center",
+
+          marginTop: dimension.height * 0.9,
         }}
       >
         <Button
@@ -66,37 +109,37 @@ const styles = StyleSheet.create({
 
   price: {
     top: "15%",
-    left: "5%",
-    color: "#000",
-    fontSize: 20,
+    left: "80%",
+    color: "#0D6EFD",
+    fontSize: 24,
     fontWeight: "bold",
   },
   costPrice: {
     top: "15.5%",
-    left: "5%",
+    left: "80%",
     color: "#707B81",
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "bold",
   },
 
   image: {
     // marginLeft : '10%',
     alignSelf: "center",
-    marginTop: "20%",
+    marginTop: "30%",
     width: "50%",
-    height: "50%",
+    height: "30%",
     resizeMode: "contain",
   },
 
   name: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
   },
   barcode: {
-    fontSize: 12,
+    fontSize: 14,
     color: "#2B2B2B",
-    left: 0,
+    fontWeight: "bold",
   },
 });
 

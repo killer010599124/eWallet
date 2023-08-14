@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation, route }) => {
       style={{
         padding: 20,
         backgroundColor: "white",
-        height: dimension.height,
+        height: '100%',
       }}
     >
       <View style={{ marginTop: dimension.height * 0.1 }}>
@@ -45,7 +45,7 @@ const HomeScreen = ({ navigation, route }) => {
         </View>
         {/* Other content for the Home screen */}
       </View>
-      <View>
+      <View style = {{marginTop : dimension.height * 0.05}}>
         <TouchableOpacity
           style={{
             backgroundColor: "#F7EFEE",
@@ -157,7 +157,7 @@ const HomeScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         
       </View>
-      <View style={{ alignItems: "center" }}>
+      {/* <View style={{ alignItems: "center" }}>
         <TouchableOpacity
           style={{
             backgroundColor: "#D5D5DC",
@@ -178,7 +178,7 @@ const HomeScreen = ({ navigation, route }) => {
             }}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

@@ -4,6 +4,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../Components/Button";
 import { ListItem } from "react-native-elements";
+import CustomHeader from "../Components/header";
 const LoginScreen = ({ navigation, route }) => {
   const [database, setDatabase] = useState("");
   const [username, setUsername] = useState("");
@@ -11,21 +12,15 @@ const LoginScreen = ({ navigation, route }) => {
   const { url } = route.params;
   const { list } = route.params;
   const databaseList = list.map((str, key) => {
-    return { label: str , value : str};
+    return { label: str, value: str };
   });
   const [items, setItems] = useState(databaseList);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  console.log(databaseList);
 
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
     setDimension(Dimensions.get("window"));
-  };
-  const [selectedValue, setSelectedValue] = useState("");
-
-  const handleValueChange = (value) => {
-    setSelectedValue(value);
   };
   useEffect(() => {
     Dimensions.addEventListener("change", onChange);
@@ -34,9 +29,15 @@ const LoginScreen = ({ navigation, route }) => {
     };
   });
 
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleValueChange = (value) => {
+    setSelectedValue(value);
+  };
+
   const handleLogin = () => {
     // Call server-side script to authenticate user
-
+    // console.log(value)
     AsyncStorage.getItem("serverURL")
       .then((url) => {
         // console.log(url); // 'https://api.example.com'
@@ -51,7 +52,7 @@ const LoginScreen = ({ navigation, route }) => {
             jsonrpc: "2.0",
             method: "call",
             params: {
-              db: `${database}`,
+              db: `${value}`,
               login: `${username}`,
               password: `${password}`,
               context: {},
@@ -93,6 +94,10 @@ const LoginScreen = ({ navigation, route }) => {
         height: dimension.height,
       }}
     >
+      <View style = {{position : 'absolute', width : dimension.width, marginTop : dimension.height * 0.05}}>
+        <CustomHeader title="login" />
+      </View>
+
       <Text
         style={{
           textAlign: "center",
@@ -116,7 +121,7 @@ const LoginScreen = ({ navigation, route }) => {
         {" "}
         Database{" "}
       </Text>
-        
+
       <DropDownPicker
         style={{
           fontSize: dimension.height * 0.025,
@@ -124,7 +129,7 @@ const LoginScreen = ({ navigation, route }) => {
           height: dimension.height * 0.04,
           paddingHorizontal: 5,
           backgroundColor: "#F7F7F9",
-          zIndex : 999
+          zIndex: 999,
         }}
         placeholder="Select an database"
         open={open}
@@ -133,14 +138,13 @@ const LoginScreen = ({ navigation, route }) => {
         setValue={setValue}
         setItems={setItems}
         items={items}
-        onChangeItem={(item) => setSelectedValue(item.value)}
       ></DropDownPicker>
       <Text
         style={{
           color: "#2B2B2B",
           fontSize: 14,
           marginTop: dimension.height * 0.03,
-          zIndex : -3
+          zIndex: -3,
         }}
       >
         {" "}
@@ -157,7 +161,7 @@ const LoginScreen = ({ navigation, route }) => {
           height: dimension.height * 0.05,
           backgroundColor: "#F7F7F9",
           marginTop: dimension.height * 0.01,
-          zIndex : -3
+          zIndex: -3,
         }}
       />
       <Text
@@ -165,7 +169,7 @@ const LoginScreen = ({ navigation, route }) => {
           color: "#2B2B2B",
           fontSize: 14,
           marginTop: dimension.height * 0.03,
-          zIndex : -3
+          zIndex: -3,
         }}
       >
         {" "}
@@ -183,7 +187,7 @@ const LoginScreen = ({ navigation, route }) => {
           paddingHorizontal: 5,
           backgroundColor: "#F7F7F9",
           marginTop: dimension.height * 0.01,
-          zIndex : -3
+          zIndex: -3,
         }}
       />
       <View
