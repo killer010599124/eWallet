@@ -8,9 +8,10 @@ import {
   TextInput,
 } from "react-native";
 import Button from "../Components/Button";
-import { TouchableOpacity, useFocusEffect  } from "react-native";
+import { TouchableOpacity, useFocusEffect } from "react-native";
 import { Input } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomHeader from "../Components/header";
 const EditPage = ({ navigation, route }) => {
   const { parsedProduct } = route.params;
   //   const parsedProduct = product;
@@ -105,7 +106,6 @@ const EditPage = ({ navigation, route }) => {
       .then((data) => {
         // Here, you can access the JSON data
 
-
         navigation.navigate("Product");
       })
       .catch((error) => {
@@ -116,6 +116,22 @@ const EditPage = ({ navigation, route }) => {
 
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
+      <View
+        style={{
+          position: "absolute",
+          width: dimension.width,
+          marginTop: dimension.height * 0.05,
+          zIndex: 9,
+        }}
+      >
+        <CustomHeader
+          title="Edit"
+          iconName=""
+          onBackPress={() => {
+            navigation.navigate("Product");
+          }}
+        />
+      </View>
       <View style={styles.image}>
         <Image
           source={{ uri: `${serverUrl}${parsedProduct.image_url}` }}
@@ -214,7 +230,15 @@ const EditPage = ({ navigation, route }) => {
           <View>
             <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Sales Price</Text>
             <View style={{ display: "flex", flexDirection: "row" }}>
-              <Text style={{ marginTop: 3 ,fontSize: dimension.height * 0.021,fontWeight: "bold",}}>$</Text>
+              <Text
+                style={{
+                  marginTop: 3,
+                  fontSize: dimension.height * 0.021,
+                  fontWeight: "bold",
+                }}
+              >
+                $
+              </Text>
               <TextInput
                 onChangeText={(text) => setSaleprice(text)}
                 value={saleprice.toString()}
@@ -229,7 +253,11 @@ const EditPage = ({ navigation, route }) => {
         </View>
 
         <View
-          style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: dimension.height * 0.02,
+          }}
         >
           <Image
             source={require("../assets/costIcon.png")}
@@ -238,7 +266,15 @@ const EditPage = ({ navigation, route }) => {
           <View>
             <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Cost</Text>
             <View style={{ display: "flex", flexDirection: "row" }}>
-              <Text style={{ marginTop: 3 ,fontSize: dimension.height * 0.021,fontWeight: "bold",}}>$</Text>
+              <Text
+                style={{
+                  marginTop: 3,
+                  fontSize: dimension.height * 0.021,
+                  fontWeight: "bold",
+                }}
+              >
+                $
+              </Text>
               <TextInput
                 onChangeText={(text) => setCost(text)}
                 value={cost.toString()}
@@ -260,7 +296,6 @@ const EditPage = ({ navigation, route }) => {
           marginBottom: 16,
           width: dimension.width,
           alignItems: "center",
-
           marginTop: dimension.height * 0.9,
         }}
       >

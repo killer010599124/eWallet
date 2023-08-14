@@ -23,6 +23,7 @@ const Barcode = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanData, setScanData] = useState("");
+  const [previousScreen, setPreviousScreen] = useState('Barcode');
   const [serverUrl, setServerUrl] = useState("");
 
   const [visibleManual, setVisibleManual] = useState(null);
@@ -157,7 +158,7 @@ const Barcode = ({ navigation }) => {
           <Button
             title={"New"}
             onPress={() => {
-              navigation.navigate('New', { scanData });
+              navigation.navigate('New', { scanData, previousScreen });
               setVisibleManual(null);
             }}
           />
@@ -187,6 +188,9 @@ const Barcode = ({ navigation }) => {
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={StyleSheet.absoluteFill}
         />
+        <View style ={{borderColor:'red',width : dimension.width, height:2, borderWidth : 1}}>
+          
+        </View>
         {/* {scanned && (
           <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
           

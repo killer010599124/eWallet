@@ -38,6 +38,7 @@ const LoginScreen = ({ navigation, route }) => {
   const handleLogin = () => {
     // Call server-side script to authenticate user
     // console.log(value)
+    AsyncStorage.setItem("username", username);
     AsyncStorage.getItem("serverURL")
       .then((url) => {
         // console.log(url); // 'https://api.example.com'
@@ -70,7 +71,7 @@ const LoginScreen = ({ navigation, route }) => {
             // Here, you can access the JSON data
 
             if (data.result) {
-              navigation.navigate("Home", { username });
+              navigation.navigate("Home");
             } else {
               alert("Invalid database name or username or password");
             }
@@ -95,7 +96,7 @@ const LoginScreen = ({ navigation, route }) => {
       }}
     >
       <View style = {{position : 'absolute', width : dimension.width, marginTop : dimension.height * 0.05}}>
-        <CustomHeader title="login" />
+        <CustomHeader title="" onBackPress={() => {navigation.navigate('Welcome')}} />
       </View>
 
       <Text

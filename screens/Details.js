@@ -45,7 +45,9 @@ const ProductDetailPage = ({ navigation, route }) => {
           marginTop: dimension.height * 0.05,
         }}
       >
-        <CustomHeader title="Edit" iconName="print-outline" />
+        <CustomHeader title="Detail" iconName="print-outline" onBackPress={() => {
+          navigation.navigate('Product');
+        }}/>
       </View>
       <Image
         source={{ uri: `${serverUrl}${parsedProduct.image_url}` }}

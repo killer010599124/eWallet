@@ -11,6 +11,7 @@ import Button from "../Components/Button";
 import { TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomHeader from "../Components/header";
 const NewPage = ({ navigation, route }) => {
   const [serverUrl, setServerUrl] = useState("");
   AsyncStorage.getItem("serverURL").then((url) => {
@@ -22,7 +23,8 @@ const NewPage = ({ navigation, route }) => {
   const [barcode, setBarcode] = useState(route.params.scanData);
   const [saleprice, setSaleprice] = useState("");
   const [cost, setCost] = useState("");
-  // const  {scanData}  = route.params;
+  const { previousScreen } = route.params;
+  console.log(previousScreen);
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
     setDimension(Dimensions.get("window"));
@@ -53,7 +55,7 @@ const NewPage = ({ navigation, route }) => {
       .then((data) => {
         console.log("This is response " + data);
         // if (data.result) {
-          navigation.navigate("Barcode");
+        navigation.navigate(previousScreen);
       })
       .catch((error) => {
         // Handle any errors that occurred during the request
@@ -64,97 +66,199 @@ const NewPage = ({ navigation, route }) => {
 
   return (
     <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
+      <View
+        style={{
+          position: "absolute",
+          width: dimension.width,
+          marginTop: dimension.height * 0.05,
+          zIndex: 9,
+        }}
+      >
+        <CustomHeader
+          title="New"
+          iconName=""
+          onBackPress={() => {
+            navigation.navigate(previousScreen);
+          }}
+        />
+      </View>
       <Image source={require("../assets/new.png")} style={styles.image} />
 
       <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-      >
-        <Image
-          source={require("../assets/nameIcon.png")}
-          style={{ width: 50, height: 50, marginRight: 10 }}
-        />
-        <View>
-          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Name</Text>
-          <TextInput onChangeText={(text) => setName(text)} value={name} />
-        </View>
-      </View>
-
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-      >
-        <Image
-          source={require("../assets/IRIcon.png")}
-          style={{ width: 50, height: 50, marginRight: 10 }}
-        />
-        <View>
-          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>
-            Internal reference
-          </Text>
-          <TextInput onChangeText={(text) => setDcode(text)} value={dcode} />
-        </View>
-      </View>
-
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-      >
-        <Image
-          source={require("../assets/barcodeIcon.png")}
-          style={{ width: 50, height: 50, marginRight: 10 }}
-        />
-        <View>
-          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Barcode</Text>
-          <Text> {barcode} </Text>
-        </View>
-      </View>
-
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-      >
-        <Image
-          source={require("../assets/spIcon.png")}
-          style={{ width: 50, height: 50, marginRight: 10 }}
-        />
-        <View>
-          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Sales Price</Text>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text style={{ marginTop: 3 }}>$</Text>
-            <TextInput
-              onChangeText={(text) => setSaleprice(text)}
-              value={saleprice.toString()}
-            />
-          </View>
-        </View>
-      </View>
-
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-      >
-        <Image
-          source={require("../assets/costIcon.png")}
-          style={{ width: 50, height: 50, marginRight: 10 }}
-        />
-        <View>
-          <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Cost</Text>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text style={{ marginTop: 3 }}>$</Text>
-            <TextInput
-              onChangeText={(text) => setCost(text)}
-              value={cost.toString()}
-            />
-          </View>
-        </View>
-      </View>
-
-      <Button
-        title="Done"
-        onPress={() => {
-          addProduct();
-          // navigation.navigate("Barcode");
-        }}
         style={{
-          backgroundColor: "#0D6EFD",
+          marginTop: dimension.height * 0.05,
+          paddingHorizontal: dimension.width * 0.05,
         }}
-      />
+      >
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image
+            source={require("../assets/nameIcon.png")}
+            style={{ width: 50, height: 50, marginRight: 10 }}
+          />
+          <View>
+            <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Name</Text>
+            <TextInput
+              onChangeText={(text) => setName(text)}
+              value={name}
+              style={{
+                fontWeight: "bold",
+                fontSize: dimension.height * 0.025,
+                width: dimension.width * 0.6,
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: dimension.height * 0.02,
+          }}
+        >
+          <Image
+            source={require("../assets/IRIcon.png")}
+            style={{ width: 50, height: 50, marginRight: 10 }}
+          />
+          <View>
+            <Text style={{ color: "#A3A3A3", fontSize: 12 }}>
+              Internal reference
+            </Text>
+            <TextInput
+              onChangeText={(text) => setDcode(text)}
+              value={dcode}
+              style={{
+                fontWeight: "bold",
+                fontSize: dimension.height * 0.025,
+                width: dimension.width * 0.6,
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: dimension.height * 0.02,
+          }}
+        >
+          <Image
+            source={require("../assets/barcodeIcon.png")}
+            style={{ width: 50, height: 50, marginRight: 10 }}
+          />
+          <View>
+            <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Barcode</Text>
+            <TextInput
+              onChangeText={(text) => setBarcode(text)}
+              value={barcode}
+              style={{
+                fontWeight: "bold",
+                fontSize: dimension.height * 0.025,
+                width: dimension.width * 0.6,
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: dimension.height * 0.02,
+          }}
+        >
+          <Image
+            source={require("../assets/spIcon.png")}
+            style={{ width: 50, height: 50, marginRight: 10 }}
+          />
+          <View>
+            <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Sales Price</Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text
+                style={{
+                  marginTop: 3,
+                  fontSize: dimension.height * 0.021,
+                  fontWeight: "bold",
+                }}
+              >
+                $
+              </Text>
+              <TextInput
+                onChangeText={(text) => setSaleprice(text)}
+                value={saleprice.toString()}
+                style={{
+                  fontWeight: "bold",
+                  fontSize: dimension.height * 0.025,
+                  width: dimension.width * 0.6,
+                }}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: dimension.height * 0.02,
+          }}
+        >
+          <Image
+            source={require("../assets/costIcon.png")}
+            style={{
+              width: 50,
+              height: 50,
+              marginRight: 10,
+            }}
+          />
+          <View>
+            <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Cost</Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text
+                style={{
+                  marginTop: 3,
+                  fontSize: dimension.height * 0.021,
+                  fontWeight: "bold",
+                }}
+              >
+                $
+              </Text>
+              <TextInput
+                onChangeText={(text) => setCost(text)}
+                value={cost.toString()}
+                style={{
+                  fontWeight: "bold",
+                  fontSize: dimension.height * 0.025,
+                  width: dimension.width * 0.6,
+                }}
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View
+        style={{
+          position: "absolute",
+          backgroundColor: "white",
+          marginBottom: 16,
+          width: dimension.width,
+          alignItems: "center",
+          marginTop: dimension.height * 0.9,
+        }}
+      >
+        <Button
+          title="Done"
+          onPress={() => {
+            addProduct();
+            // navigation.navigate("Barcode");
+          }}
+          style={{
+            backgroundColor: "#0D6EFD",
+          }}
+        />
+      </View>
     </View>
   );
 };

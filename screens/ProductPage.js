@@ -10,12 +10,14 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useScrollToTop } from "@react-navigation/native";
 import Button from "../Components/Button";
 import CustomHeader from "../Components/header";
 const ProductScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [flag, setFlag] = useState(false);
+  const [scanData, setScanData] = useState("");
+  const [previousScreen, setPreviousScreen] = useState('Product');
   const [serverUrl, setServerUrl] = useState("");
   const [dimension, setDimension] = useState(Dimensions.get("window"));
 
@@ -151,11 +153,20 @@ const ProductScreen = ({ navigation }) => {
         style={{
           position: "absolute",
           width: dimension.width,
-         
           marginTop: dimension.height * 0.05,
+          zIndex: 999,
         }}
       >
-        <CustomHeader title="Product" iconName="add-outline" />
+        <CustomHeader
+          title="Product"
+          iconName="add-outline"
+          onBackPress={() => {
+            navigation.navigate("Home");
+          }}
+          onFunctionPress={() => {
+            navigation.navigate('New', {scanData, previousScreen})
+          }}
+        />
       </View>
       <View
         style={{
