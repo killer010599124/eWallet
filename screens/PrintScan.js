@@ -27,11 +27,13 @@ const PrintScanPage = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanData, setScanData] = useState("00000000000");
+  const [productData, setProductData] = useState(null);
   const [init, setInit] = useState(true);
   const [previousScreen, setPreviousScreen] = useState("Barcode");
   const [serverUrl, setServerUrl] = useState("");
   const [currentState, setCurrentState] = useState(true);
   const [visibleManual, setVisibleManual] = useState(null);
+  const [printVisible, setPrintVisible] = useState(null);
 
   const numpadRef = useRef(null);
 
@@ -106,6 +108,31 @@ const PrintScanPage = ({ navigation }) => {
     );
   };
 
+  const PrintBarcodeGenerator = () => {
+    const barcodeNumber = scanData; // Replace with your barcode number
+
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          width: "100%",
+          marginTop: dimension.height * 0.05,
+        }}
+      >
+        <Barcode
+          format="CODE128"
+          value={barcodeNumber}
+          text={barcodeNumber}
+          style={{}}
+          textStyle={{ fontWeight: "bold", fontSize: 18 }}
+          maxWidth={dimension.width * 0.8}
+          width={dimension.width * 0.8}
+          height={dimension.height * 0.06}
+        />
+      </View>
+    );
+  };
+
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
 
@@ -138,7 +165,10 @@ const PrintScanPage = ({ navigation }) => {
         // Here, you can access the JSON data
         console.log(data);
         if (data.length != 0) {
-          navigation.navigate("PriceUpdate", { data });
+          setPrintVisible(1);
+          console.log(data);
+          setProductData(data[0]);
+          //   navigation.navigate("PriceUpdate", { data });
         } else {
           setVisibleManual(1);
           console.log("no Data");
@@ -242,6 +272,114 @@ const PrintScanPage = ({ navigation }) => {
         </View>
       </View>
     );
+  };
+
+  const PrintModal = () => {
+    console.log(productData);
+    if (productData != null)
+      return (
+        <View
+          style={{
+            borderTopRightRadius: dimension.width * 0.02,
+            borderTopLeftRadius: dimension.width * 0.02,
+            height: dimension.height * 0.7,
+            backgroundColor: "white",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={{ uri: `${serverUrl}${productData.image_url}` }}
+            style={styles.image}
+          />
+          <Text
+            style={{
+              fontWeight: "bold",
+              alignSelf: "center",
+              width: dimension.width * 0.6,
+              marginTop: dimension?.height * 0.02,
+              marginLeft: -dimension.width * 0.3,
+              color: "#15224F",
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            {productData.name}
+          </Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              alignSelf: "center",
+              width: dimension.width * 0.6,
+              marginTop: dimension?.height * 0.01,
+              marginLeft: -dimension.width * 0.3,
+              color: "#707B81",
+              fontSize: 14,
+            }}
+          >
+            {productData.default_code}
+          </Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              alignSelf: "center",
+              textAlign: "center",
+              width: dimension.width * 0.6,
+              marginTop: dimension?.height * 0.02,
+              color: "black",
+              fontSize: dimension.height * 0.05,
+              fontWeight: "bold",
+            }}
+          >
+            P.V.P
+          </Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              textAlign: "center",
+              alignSelf: "center",
+              width: dimension.width * 0.6,
+              color: "black",
+              fontSize: dimension.height * 0.05,
+              fontWeight: "bold",
+            }}
+          >
+            ${productData.list_price}
+          </Text>
+          <View style={{}}>{PrintBarcodeGenerator()}</View>
+
+          <View
+            style={{
+              position: "absolute",
+              alignItems: "center",
+              width: dimension.width,
+              marginTop: dimension.height * 0.58,
+            }}
+          >
+            <Button
+              title={"Print"}
+              onPress={() => {
+                //   navigation.navigate("New", { scanData, previousScreen });
+                setPrintVisible(null);
+              }}
+            />
+          </View>
+          {/* <View
+            style={{
+              position: "absolute",
+              alignItems: "center",
+              width: dimension.width,
+              marginTop: dimension.height * 0.58,
+            }}
+          >
+            <Button
+              title={"Cancel"}
+              onPress={() => {
+                setPrintVisible(null);
+              }}
+            />
+          </View> */}
+        </View>
+      );
   };
   function Screen1() {
     return (
@@ -381,11 +519,11 @@ const PrintScanPage = ({ navigation }) => {
         <NumericPad
           style={{ marginTop: dimension.height * 0.38, position: "absolute" }}
           ref={numpadRef}
-          numLength={8}
+          numLength={20}
           buttonSize={60}
           activeOpacity={0.1}
           onValueChange={(value) => {
-            if(value != '')setInit(false);
+            if (value != "") setInit(false);
             else setInit(true);
             setScanData(value);
           }}
@@ -401,9 +539,7 @@ const PrintScanPage = ({ navigation }) => {
             numpadRef.current.clear();
           }}
         />
-        <Modal isVisible={visibleManual === 1} style={styles.bottomModal}>
-          {royalModal()}
-        </Modal>
+
         <View
           style={{
             position: "absolute",
@@ -495,6 +631,12 @@ const PrintScanPage = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       {currentState ? Screen1() : Screen2()}
+      <Modal isVisible={visibleManual === 1} style={styles.bottomModal}>
+        {royalModal()}
+      </Modal>
+      <Modal isVisible={printVisible === 1} style={styles.bottomModal}>
+        {PrintModal()}
+      </Modal>
       {/* <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
@@ -538,8 +680,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: "20%",
-    height: "100%",
+    width: "50%",
+    height: "20%",
+    marginTop: "10%",
   },
   info: {
     color: "black",
