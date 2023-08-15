@@ -93,6 +93,7 @@ const LoginScreen = ({ navigation, route }) => {
         padding: 20,
         backgroundColor: "white",
         height: dimension.height,
+        marginTop : -dimension.height * 0.062
       }}
     >
       <View style = {{position : 'absolute', width : dimension.width, marginTop : dimension.height * 0.05}}>

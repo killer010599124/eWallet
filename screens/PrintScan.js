@@ -574,7 +574,7 @@ const PrintScanPage = ({ navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: "white", flex: 1 }}>
+    <View style={{ backgroundColor: "white", flex: 1 ,marginTop : -dimension.height * 0.062}}>
       <View
         style={{
           position: "absolute",

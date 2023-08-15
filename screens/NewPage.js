@@ -65,7 +65,7 @@ const NewPage = ({ navigation, route }) => {
   // console.log(route.params.scanData);
 
   return (
-    <View style={{ backgroundColor: "white", padding: 10, flex: 1 }}>
+    <View style={{ backgroundColor: "white", padding: 10, flex: 1 ,marginTop : -dimension.height * 0.062}}>
       <View
         style={{
           position: "absolute",

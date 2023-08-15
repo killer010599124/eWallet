@@ -148,7 +148,7 @@ const ProductScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: "white" }}>
+    <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: "white" ,marginTop : -dimension.height * 0.062}}>
       
       <View
         style={{

@@ -332,6 +332,7 @@ const ScanPage = ({ navigation }) => {
           backgroundColor: "white",
           height: dimension.height,
           alignItems: "center",
+          
         }}
       >
         <Text
@@ -381,7 +382,7 @@ const ScanPage = ({ navigation }) => {
         <NumericPad
           style={{ marginTop: dimension.height * 0.38, position: "absolute" }}
           ref={numpadRef}
-          numLength={8}
+          numLength={20}
           buttonSize={60}
           activeOpacity={0.1}
           onValueChange={(value) => {
@@ -438,7 +439,7 @@ const ScanPage = ({ navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: "white", flex: 1 }}>
+    <View style={{ backgroundColor: "white", flex: 1 ,marginTop : -dimension.height * 0.062}}>
       <View
         style={{
           position: "absolute",

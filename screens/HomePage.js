@@ -38,7 +38,8 @@ const HomeScreen = ({ navigation, route }) => {
       style={{
         padding: 20,
         backgroundColor: "white",
-        height: '100%',
+        height: '120%',
+        marginTop : -dimension.height * 0.062
       }}
     >
       <View style={{ marginTop: dimension.height * 0.1 }}>

@@ -54,6 +54,7 @@ const WelcomeScreen = ({ navigation }) => {
         flex: 1,
         backgroundColor: "white",
         height: dimension.height,
+        marginTop : -dimension.height * 0.062
       }}
     >
       <Text
