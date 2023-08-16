@@ -192,7 +192,7 @@ const LoginScreen = ({ navigation, route }) => {
         onChangeText={setUsername}
         value={username}
         style={{
-          fontSize: dimension.height * 0.025,
+          fontSize: dimension.height * 0.02,
           borderRadius: 5,
           paddingHorizontal: 5,
           height: dimension.height * 0.05,
@@ -219,7 +219,7 @@ const LoginScreen = ({ navigation, route }) => {
           value={password}
           secureTextEntry={!showPassword}
           style={{
-            fontSize: dimension.height * 0.025,
+            fontSize: dimension.height * 0.02,
             borderRadius: 5,
             height: dimension.height * 0.05,
             paddingHorizontal: 5,

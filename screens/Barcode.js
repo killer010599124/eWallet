@@ -54,7 +54,6 @@ const ScanPage = ({ navigation }) => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
-      console.log("hello");
     };
 
     getBarCodeScannerPermissions();

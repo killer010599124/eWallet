@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   View,
   Text,
@@ -131,17 +132,21 @@ const ProductScreen = ({ navigation }) => {
             style={{
               color: "#0D6EFD",
               fontSize: 12,
-              width: dimension.width * 0.7,
+              width: dimension.width * 0.6,
             }}
           >
             {item.name}
           </Text>
           <Text style={{ fontSize: 12 }}>{item.barcode}</Text>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text style={{ fontSize: 12 }}>${item.standard_price}</Text>
-            <Text style={{ fontSize: 12, marginLeft: dimension.width * 0.4 }}>
-              ${item.list_price}
-            </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: 'flex-end'
+            }}
+          >
+            {/* <Text style={{ fontSize: 12 }}>${item.standard_price}</Text> */}
+            <Text style={{ fontSize: 12, fontWeight : 'bold' }}>${item.list_price}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -149,8 +154,14 @@ const ProductScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: "white" ,marginTop : -dimension.height * 0.062}}>
-      
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: 10,
+        backgroundColor: "white",
+        marginTop: -dimension.height * 0.062,
+      }}
+    >
       <View
         style={{
           position: "absolute",
@@ -229,11 +240,11 @@ const ProductScreen = ({ navigation }) => {
                   marginTop: dimension.height * 0.08,
                   marginLeft: 10,
                   alignItems: "center",
-                  justifyContent : 'center'
+                  justifyContent: "center",
                 }
           }
           onPress={() => {
-            navigation.navigate('Barcode' , {})
+            navigation.navigate("Barcode", {});
           }}
         >
           <Ionicons name="barcode-outline" size={24} color="black" />
@@ -257,7 +268,11 @@ const ProductScreen = ({ navigation }) => {
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <Text style={{ color: "black", fontSize: 12 }}>Search</Text>
+            <MaterialCommunityIcons
+              name="database-search-outline"
+              size={24}
+              color="black"
+            />
           </View>
         </TouchableOpacity>
       </View>
