@@ -165,7 +165,7 @@ const ScanPage = ({ navigation }) => {
         <Octicons
           name="alert"
           size={36}
-          color="black"
+          color="#FFA800"
           style={{ marginTop: dimension.height * 0.03 }}
         />
         <Text
@@ -383,7 +383,7 @@ const ScanPage = ({ navigation }) => {
           style={{ marginTop: dimension.height * 0.38, position: "absolute" }}
           ref={numpadRef}
           numLength={20}
-          buttonSize={60}
+          buttonSize={dimension.height * 0.06}
           activeOpacity={0.1}
           onValueChange={(value) => {
             if(value != '')setInit(false);

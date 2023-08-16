@@ -1,23 +1,37 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { View, Text, TextInput, Dimensions, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Dimensions,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../Components/Button";
 import { ListItem } from "react-native-elements";
 import CustomHeader from "../Components/header";
+// import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/Ionicons";
 const LoginScreen = ({ navigation, route }) => {
   const [database, setDatabase] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { url } = route.params;
   const { list } = route.params;
+  // const list = ["asdf", "asdf", "asdf"]
   const databaseList = list.map((str, key) => {
     return { label: str, value: str };
   });
   const [items, setItems] = useState(databaseList);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
     setDimension(Dimensions.get("window"));
@@ -92,12 +106,23 @@ const LoginScreen = ({ navigation, route }) => {
       style={{
         padding: 20,
         backgroundColor: "white",
-        height: dimension.height,
-        marginTop : -dimension.height * 0.062
+        height: "120%",
+        marginTop: -dimension.height * 0.062,
       }}
     >
-      <View style = {{position : 'absolute', width : dimension.width, marginTop : dimension.height * 0.05}}>
-        <CustomHeader title="" onBackPress={() => {navigation.navigate('Welcome')}} />
+      <View
+        style={{
+          position: "absolute",
+          width: dimension.width,
+          marginTop: dimension.height * 0.05,
+        }}
+      >
+        <CustomHeader
+          title=""
+          onBackPress={() => {
+            navigation.navigate("Welcome");
+          }}
+        />
       </View>
 
       <Text
@@ -127,13 +152,23 @@ const LoginScreen = ({ navigation, route }) => {
       <DropDownPicker
         style={{
           fontSize: dimension.height * 0.025,
-          borderRadius: 15,
-          height: dimension.height * 0.04,
+          borderRadius: 5,
+          borderColor: "#F7F7F9",
+          height: dimension.height * 0.05,
+          minHeight: dimension.height * 0.05,
+          fontSize: dimension.height * 0.025,
           paddingHorizontal: 5,
+          marginTop: dimension.height * 0.01,
           backgroundColor: "#F7F7F9",
           zIndex: 999,
         }}
+        // listItemContainerStyle = {{backgroundColor : '#F7F7F9', borderColor : '#F7F7F9'}}
         placeholder="Select an database"
+        // dropDownContainerStyle = {{backgroundColor : 'red'}}
+        selectedItemContainerStyle={{
+          backgroundColor: "#F7F7F9",
+          borderColor: "#F7F7F9",
+        }}
         open={open}
         value={value}
         setOpen={setOpen}
@@ -177,21 +212,40 @@ const LoginScreen = ({ navigation, route }) => {
         {" "}
         Password{" "}
       </Text>
-      <TextInput
-        placeholder="Enter password"
-        onChangeText={setPassword}
-        value={password}
-        secureTextEntry={true}
-        style={{
-          fontSize: dimension.height * 0.025,
-          borderRadius: 5,
-          height: dimension.height * 0.05,
-          paddingHorizontal: 5,
-          backgroundColor: "#F7F7F9",
-          marginTop: dimension.height * 0.01,
-          zIndex: -3,
-        }}
-      />
+      <View style={{}}>
+        <TextInput
+          placeholder="Enter password"
+          onChangeText={setPassword}
+          value={password}
+          secureTextEntry={!showPassword}
+          style={{
+            fontSize: dimension.height * 0.025,
+            borderRadius: 5,
+            height: dimension.height * 0.05,
+            paddingHorizontal: 5,
+            paddingRight: 40,
+            backgroundColor: "#F7F7F9",
+            marginTop: dimension.height * 0.01,
+            zIndex: -3,
+            position: "relative",
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            marginTop: dimension.height * 0.02,
+            marginLeft: dimension.width * 0.8,
+          }}
+          onPress={handleTogglePasswordVisibility}
+        >
+          <Icon
+            name={!showPassword ? "eye" : "eye-off"}
+            size={20}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
+
       <View
         style={{
           position: "absolute",

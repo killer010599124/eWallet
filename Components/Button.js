@@ -34,7 +34,7 @@ const Button = ({ title, onPress }) => {
         marginTop: dimension.height * 0.05,
         width: dimension.width - 40,
         height: dimension.height * 0.06,
-        borderRadius: dimension.height * 0.01,
+        borderRadius: dimension.height * 0.015,
       }}
       // onPress={() => navigate('HomeScreen')}
       underlayColor="#fff"

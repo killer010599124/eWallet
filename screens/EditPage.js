@@ -12,6 +12,7 @@ import { TouchableOpacity, useFocusEffect } from "react-native";
 import { Input } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomHeader from "../Components/header";
+import { Ionicons } from "@expo/vector-icons";
 const EditPage = ({ navigation, route }) => {
   const { parsedProduct } = route.params;
   //   const parsedProduct = product;
@@ -115,7 +116,14 @@ const EditPage = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ backgroundColor: "white", padding: 10, flex: 1,marginTop : -dimension.height * 0.062 }}>
+    <View
+      style={{
+        backgroundColor: "white",
+        padding: 10,
+        flex: 1,
+        marginTop: -dimension.height * 0.062,
+      }}
+    >
       <View
         style={{
           position: "absolute",
@@ -168,7 +176,7 @@ const EditPage = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: dimension.height * 0.02,
+            marginTop: dimension.height * 0.03,
           }}
         >
           <Image
@@ -195,7 +203,7 @@ const EditPage = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: dimension.height * 0.02,
+            marginTop: dimension.height * 0.03,
           }}
         >
           <Image
@@ -204,15 +212,31 @@ const EditPage = ({ navigation, route }) => {
           />
           <View>
             <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Barcode</Text>
-            <TextInput
-              onChangeText={(text) => setBarcode(text)}
-              value={barcode}
-              style={{
-                fontWeight: "bold",
-                fontSize: dimension.height * 0.025,
-                width: dimension.width * 0.6,
-              }}
-            />
+            <View>
+              <TextInput
+                onChangeText={(text) => setBarcode(text)}
+                value={barcode}
+                style={{
+                  fontWeight: "bold",
+                  fontSize: dimension.height * 0.025,
+                  width: dimension.width * 0.6,
+                }}
+              />
+              <TouchableOpacity
+                style={{
+                  position : 'absolute',
+                  borderRadius: 10,
+                  height: dimension.height * 0.04,
+                  width: dimension.height * 0.04,
+                  borderRadius: dimension.height * 0.02,
+                  marginLeft: dimension.width * 0.6,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons name="barcode-outline" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -220,7 +244,7 @@ const EditPage = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: dimension.height * 0.02,
+            marginTop: dimension.height * 0.03,
           }}
         >
           <Image
@@ -252,7 +276,7 @@ const EditPage = ({ navigation, route }) => {
           </View>
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -286,7 +310,7 @@ const EditPage = ({ navigation, route }) => {
               />
             </View>
           </View>
-        </View>
+        </View> */}
       </View>
 
       <View

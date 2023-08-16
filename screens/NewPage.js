@@ -12,6 +12,7 @@ import { TouchableOpacity } from "react-native";
 import { Input } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomHeader from "../Components/header";
+import { Ionicons } from "@expo/vector-icons";
 const NewPage = ({ navigation, route }) => {
   const [serverUrl, setServerUrl] = useState("");
   AsyncStorage.getItem("serverURL").then((url) => {
@@ -21,8 +22,8 @@ const NewPage = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [dcode, setDcode] = useState("");
   const [barcode, setBarcode] = useState(route.params.scanData);
-  const [saleprice, setSaleprice] = useState("");
-  const [cost, setCost] = useState("");
+  const [saleprice, setSaleprice] = useState("0.00");
+  const [cost, setCost] = useState("0.00");
   const { previousScreen } = route.params;
   console.log(previousScreen);
   const [dimension, setDimension] = useState(Dimensions.get("window"));
@@ -65,7 +66,14 @@ const NewPage = ({ navigation, route }) => {
   // console.log(route.params.scanData);
 
   return (
-    <View style={{ backgroundColor: "white", padding: 10, flex: 1 ,marginTop : -dimension.height * 0.062}}>
+    <View
+      style={{
+        backgroundColor: "white",
+        padding: 10,
+        flex: 1,
+        marginTop: -dimension.height * 0.062,
+      }}
+    >
       <View
         style={{
           position: "absolute",
@@ -113,7 +121,7 @@ const NewPage = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: dimension.height * 0.02,
+            marginTop: dimension.height * 0.03,
           }}
         >
           <Image
@@ -140,7 +148,7 @@ const NewPage = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: dimension.height * 0.02,
+            marginTop: dimension.height * 0.03,
           }}
         >
           <Image
@@ -149,15 +157,31 @@ const NewPage = ({ navigation, route }) => {
           />
           <View>
             <Text style={{ color: "#A3A3A3", fontSize: 12 }}>Barcode</Text>
-            <TextInput
-              onChangeText={(text) => setBarcode(text)}
-              value={barcode}
-              style={{
-                fontWeight: "bold",
-                fontSize: dimension.height * 0.025,
-                width: dimension.width * 0.6,
-              }}
-            />
+            <View>
+              <TextInput
+                onChangeText={(text) => setBarcode(text)}
+                value={barcode}
+                style={{
+                  fontWeight: "bold",
+                  fontSize: dimension.height * 0.025,
+                  width: dimension.width * 0.6,
+                }}
+              />
+              <TouchableOpacity
+                style={{
+                  position: "absolute",
+                  borderRadius: 10,
+                  height: dimension.height * 0.04,
+                  width: dimension.height * 0.04,
+                  borderRadius: dimension.height * 0.02,
+                  marginLeft: dimension.width * 0.6,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons name="barcode-outline" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -165,7 +189,7 @@ const NewPage = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: dimension.height * 0.02,
+            marginTop: dimension.height * 0.03,
           }}
         >
           <Image
@@ -197,7 +221,7 @@ const NewPage = ({ navigation, route }) => {
           </View>
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -235,7 +259,7 @@ const NewPage = ({ navigation, route }) => {
               />
             </View>
           </View>
-        </View>
+        </View> */}
       </View>
 
       <View

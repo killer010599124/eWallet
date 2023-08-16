@@ -5,11 +5,19 @@ const CustomHeader = ({ title, onBackPress, onFunctionPress, iconName }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
-        <Icon name="chevron-back-outline" size={24} color="#333" />
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Icon name="chevron-back-outline" size={24} color="#333" />
+        </View>
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity onPress={onFunctionPress} style={styles.newButton}>
-        <Icon name={iconName} size={24} color="#333" />
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Icon name={iconName} size={24} color="#333" />
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -25,9 +33,19 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginRight: 100,
+    width: 60,
+    height: 60,
+    // backgroundColor: "#F7F7F9",
+    borderRadius: 30,
+    alignItems: "center",
   },
   newButton: {
     marginLeft: 100,
+    width: 60,
+    height: 60,
+    // backgroundColor: "#F7F7F9",
+    borderRadius: 30,
+    alignItems: "center",
   },
   title: {
     fontSize: 16,

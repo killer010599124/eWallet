@@ -11,13 +11,13 @@ import {
 import { Avatar } from "react-native-elements";
 import Button from "../Components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomHeader from "../Components/header";
 const HomeScreen = ({ navigation, route }) => {
-  
   const [username, setUsername] = useState("");
   const [avatarTitle, setAvatarTitle] = useState("");
   AsyncStorage.getItem("username").then((name) => {
     setUsername(name);
-    setAvatarTitle (name.charAt(0).toUpperCase());
+    setAvatarTitle(name.charAt(0).toUpperCase());
   });
 
   const [dimension, setDimension] = useState(Dimensions.get("window"));
@@ -38,10 +38,24 @@ const HomeScreen = ({ navigation, route }) => {
       style={{
         padding: 20,
         backgroundColor: "white",
-        height: '120%',
-        marginTop : -dimension.height * 0.062
+        height: "120%",
+        marginTop: -dimension.height * 0.062,
       }}
     >
+      <View
+        style={{
+          position: "absolute",
+          width: dimension.width,
+          marginTop: dimension.height * 0.05,
+        }}
+      >
+        <CustomHeader
+          title=""
+          onBackPress={() => {
+            navigation.navigate("Login");
+          }}
+        />
+      </View>
       <View style={{ marginTop: dimension.height * 0.1 }}>
         <View style={styles.header}>
           <InitialIcon initials={avatarTitle} />
@@ -52,7 +66,7 @@ const HomeScreen = ({ navigation, route }) => {
         </View>
         {/* Other content for the Home screen */}
       </View>
-      <View style = {{marginTop : dimension.height * 0.05}}>
+      <View style={{ marginTop: dimension.height * 0.05 }}>
         <TouchableOpacity
           style={{
             backgroundColor: "#F7EFEE",
@@ -62,7 +76,6 @@ const HomeScreen = ({ navigation, route }) => {
             alignItems: "center",
           }}
           underlayColor="#fff"
-         
         >
           <TouchableOpacity
             style={{
@@ -86,7 +99,14 @@ const HomeScreen = ({ navigation, route }) => {
               }}
             />
           </TouchableOpacity>
-          <Text style={{ color: "#363636", textAlign: "center", fontSize: 14,marginTop : dimension.height * 0.01 }}>
+          <Text
+            style={{
+              color: "#363636",
+              textAlign: "center",
+              fontSize: 14,
+              marginTop: dimension.height * 0.01,
+            }}
+          >
             Product
           </Text>
         </TouchableOpacity>
@@ -95,12 +115,11 @@ const HomeScreen = ({ navigation, route }) => {
             backgroundColor: "#F7EFEE",
             height: dimension.height * 0.15,
             marginTop: dimension.height * 0.02,
-          
+
             borderRadius: 10,
             alignItems: "center",
           }}
           underlayColor="#fff"
-         
         >
           <TouchableOpacity
             style={{
@@ -123,10 +142,16 @@ const HomeScreen = ({ navigation, route }) => {
                 height: "60%",
                 marginTop: dimension.height * 0.015,
               }}
-              
             />
           </TouchableOpacity>
-          <Text style={{ color: "#363636", textAlign: "center", fontSize: 14,marginTop : dimension.height * 0.01 }}>
+          <Text
+            style={{
+              color: "#363636",
+              textAlign: "center",
+              fontSize: 14,
+              marginTop: dimension.height * 0.01,
+            }}
+          >
             Price Update
           </Text>
         </TouchableOpacity>
@@ -138,7 +163,6 @@ const HomeScreen = ({ navigation, route }) => {
             borderRadius: 10,
             alignItems: "center",
           }}
-         
           underlayColor="#fff"
         >
           <TouchableOpacity
@@ -164,11 +188,17 @@ const HomeScreen = ({ navigation, route }) => {
               }}
             />
           </TouchableOpacity>
-          <Text style={{ color: "#363636", textAlign: "center", fontSize: 14,marginTop : dimension.height * 0.01  }}>
+          <Text
+            style={{
+              color: "#363636",
+              textAlign: "center",
+              fontSize: 14,
+              marginTop: dimension.height * 0.01,
+            }}
+          >
             Product Print
           </Text>
         </TouchableOpacity>
-        
       </View>
       {/* <View style={{ alignItems: "center" }}>
         <TouchableOpacity

@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useIsFocused, useScrollToTop } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons";
 import Button from "../Components/Button";
 import CustomHeader from "../Components/header";
 const ProductScreen = ({ navigation }) => {
@@ -180,7 +181,7 @@ const ProductScreen = ({ navigation }) => {
         <TextInput
           style={{
             flex: 1,
-            height: dimension.height * 0.04,
+            height: dimension.height * 0.06,
             borderColor: "gray",
             borderWidth: 1,
             // marginRight: 10,
@@ -189,7 +190,7 @@ const ProductScreen = ({ navigation }) => {
             borderColor: "white",
             borderRadius: 20,
             marginTop: dimension.height * 0.08,
-            fontSize: 12,
+            fontSize: 16,
             elevation: 2, // Add elevation for box shadow effect
             shadowColor: "#000",
             shadowOffset: {
@@ -221,7 +222,6 @@ const ProductScreen = ({ navigation }) => {
             flag
               ? { display: "none" }
               : {
-                  backgroundColor: "#0D6EFD",
                   borderRadius: 10,
                   height: dimension.height * 0.04,
                   width: dimension.height * 0.04,
@@ -229,17 +229,14 @@ const ProductScreen = ({ navigation }) => {
                   marginTop: dimension.height * 0.08,
                   marginLeft: 10,
                   alignItems: "center",
+                  justifyContent : 'center'
                 }
           }
+          onPress={() => {
+            navigation.navigate('Barcode' , {})
+          }}
         >
-          <Image
-            source={require("../assets/VectorW.png")}
-            style={{
-              width: "50%",
-              height: "50%",
-              marginTop: dimension.height * 0.01,
-            }}
-          />
+          <Ionicons name="barcode-outline" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           style={

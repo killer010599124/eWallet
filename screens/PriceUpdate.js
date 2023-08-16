@@ -14,6 +14,7 @@ import Barcode from "@kichiyaki/react-native-barcode-generator";
 import CustomHeader from "../Components/header";
 import NumericPad from "react-native-numeric-pad";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 const PriceUpdatePage = ({ navigation, route }) => {
   const [dimension, setDimension] = useState(Dimensions.get("window"));
@@ -30,9 +31,15 @@ const PriceUpdatePage = ({ navigation, route }) => {
   const numpadRef = useRef(null);
 
   const [saleprice, setSaleprice] = useState(null);
+
   useEffect(() => {
-    setSaleprice(product[0].list_price.toString())
-  },[])
+    setSaleprice(product[0].list_price.toString());
+  }, []);
+
+  const [isTooltipVisible, setTooltipVisible] = useState(false);
+  const toggleTooltip = () => {
+    setTooltipVisible(!isTooltipVisible);
+  };
   const updatePrice = () => {
     const headers = {
       Accept: "application/json",
@@ -78,7 +85,7 @@ const PriceUpdatePage = ({ navigation, route }) => {
         style={{
           alignItems: "center",
           width: "100%",
-          marginTop: dimension.height * 0.05,
+          marginTop: dimension.height * 0.03,
         }}
       >
         <Barcode
@@ -95,7 +102,14 @@ const PriceUpdatePage = ({ navigation, route }) => {
     );
   };
   return (
-    <View style={{ backgroundColor: "white", padding: 10, flex: 1 ,marginTop : -dimension.height * 0.062}}>
+    <View
+      style={{
+        backgroundColor: "white",
+        padding: 10,
+        flex: 1,
+        marginTop: -dimension.height * 0.062,
+      }}
+    >
       <View
         style={{
           position: "absolute",
@@ -118,7 +132,9 @@ const PriceUpdatePage = ({ navigation, route }) => {
           alignItems: "center",
         }}
       >
-        <Text style={styles.name}>{product[0].name}</Text>
+        <Text style={{ ...styles.name, textAlign: "center" }}>
+          {product[0].name}
+        </Text>
         {BarcodeGenerator()}
         <View
           style={{
@@ -140,19 +156,37 @@ const PriceUpdatePage = ({ navigation, route }) => {
             value={saleprice}
           /> */}
         </View>
-
-        <Text style={styles.barcode}>${product[0].standard_price}</Text>
       </View>
+      {isTooltipVisible && (
+        <View style={{...styles.tooltipContainer, top: dimension.height * 0.48, left : dimension.width * 0.75}}>
+          <View style={styles.tooltipContent}>
+            <Text style={{ ...styles.barcode }}>
+              ${product[0].standard_price}
+            </Text>
+          </View>
+        </View>
+      )}
+
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          marginTop: dimension.height * 0.55,
+          marginLeft: dimension.width * 0.8,
+        }}
+        onPress={toggleTooltip}
+      >
+        <Ionicons name="ios-alert-circle" size={30} color="#FFA800" />
+      </TouchableOpacity>
       <NumericPad
-        style={{ marginTop: dimension.height * 0.1 }}
+        style={{position : 'absolute', marginTop: dimension.height * 0.6, alignSelf : 'center' }}
         ref={numpadRef}
         numLength={8}
-        buttonSize={60}
+        buttonSize={dimension.height * 0.06}
         activeOpacity={0.1}
         onValueChange={(value) => setSaleprice(value)}
         allowDecimal={true}
         // Try them to understand each area :)
-        // style={{ backgroundColor: 'black', paddingVertical: 12 }}
+
         // buttonAreaStyle={{ backgroundColor: 'gray' }}
         // buttonItemStyle={{ backgroundColor: 'red' }}
         rightBottomButton={
@@ -217,7 +251,18 @@ const styles = StyleSheet.create({
     height: "50%",
     resizeMode: "contain",
   },
-
+  tooltipContainer: {
+    position: 'absolute',
+    top: 80, // Adjust the position as needed
+    left: 20, // Adjust the position as needed
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    elevation: 5,
+  },
+  tooltipContent: {
+    alignItems: 'center',
+  },
   name: {
     fontSize: 24,
     fontWeight: "bold",
