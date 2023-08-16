@@ -27,6 +27,8 @@ const ScanPage = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanData, setScanData] = useState("00000000000");
+  const scannerRef = useRef(null);
+
   const [init, setInit] = useState(true);
   const [previousScreen, setPreviousScreen] = useState("Barcode");
   const [serverUrl, setServerUrl] = useState("");
@@ -52,10 +54,26 @@ const ScanPage = ({ navigation }) => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
+      console.log("hello");
     };
 
     getBarCodeScannerPermissions();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // do something - for example: reset states, ask for camera permission
+      setScanned(false);
+      setHasPermission(false);
+      (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted"); 
+      })();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   const BarcodeGeneratorInit = () => {
     const barcodeNumber = "0000000000000"; // Replace with your barcode number
@@ -138,10 +156,12 @@ const ScanPage = ({ navigation }) => {
         // Here, you can access the JSON data
         console.log(data);
         if (data.length != 0) {
+          // setScanned(false);
           navigation.navigate("PriceUpdate", { data });
         } else {
           setVisibleManual(1);
           console.log("no Data");
+          // setScanned(false);
         }
         // setProducts(data);
       })
@@ -271,10 +291,15 @@ const ScanPage = ({ navigation }) => {
             Scan the barcode of the produts
           </Text>
         </View>
-        {/* {scanned && (
-          <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
-          
+        {scanned && (
+          <Button
+            title={"Tap to Scan Again"}
+            onPress={() => {
+              setScanned(false);
+            }}
+          />
         )}
+        {/*
         <View
           style={{
             backgroundColor: "white",
@@ -332,7 +357,6 @@ const ScanPage = ({ navigation }) => {
           backgroundColor: "white",
           height: dimension.height,
           alignItems: "center",
-          
         }}
       >
         <Text
@@ -386,7 +410,7 @@ const ScanPage = ({ navigation }) => {
           buttonSize={dimension.height * 0.06}
           activeOpacity={0.1}
           onValueChange={(value) => {
-            if(value != '')setInit(false);
+            if (value != "") setInit(false);
             else setInit(true);
             setScanData(value);
           }}
@@ -439,7 +463,13 @@ const ScanPage = ({ navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: "white", flex: 1 ,marginTop : -dimension.height * 0.062}}>
+    <View
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+        marginTop: -dimension.height * 0.062,
+      }}
+    >
       <View
         style={{
           position: "absolute",
