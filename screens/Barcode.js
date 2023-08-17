@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
+  Keyboard 
 } from "react-native";
 import Button from "../Components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -29,10 +30,19 @@ const ScanPage = ({ navigation }) => {
   const [scanData, setScanData] = useState("00000000000");
   const scannerRef = useRef(null);
 
+  const [laserData, setLaserData] = useState("");
+  const [hiddenValue, setHiddenValue] = useState("");
+  useEffect(() => {
+    if (laserData != "") {
+      getProduct(laserData);
+    }
+  }, [laserData]);
+  const focusRef = React.useRef()
+
   const [init, setInit] = useState(true);
   const [previousScreen, setPreviousScreen] = useState("Barcode");
   const [serverUrl, setServerUrl] = useState("");
-  const [currentState, setCurrentState] = useState(true);
+  const [currentState, setCurrentState] = useState("laser");
   const [visibleManual, setVisibleManual] = useState(null);
 
   const numpadRef = useRef(null);
@@ -60,13 +70,16 @@ const ScanPage = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       // do something - for example: reset states, ask for camera permission
       setScanned(false);
       setHasPermission(false);
+      setLaserData("");
+      setHiddenValue("");
+      console.log("back");
       (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted"); 
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasPermission(status === "granted");
       })();
     });
 
@@ -290,14 +303,7 @@ const ScanPage = ({ navigation }) => {
             Scan the barcode of the produts
           </Text>
         </View>
-        {scanned && (
-          <Button
-            title={"Tap to Scan Again"}
-            onPress={() => {
-              setScanned(false);
-            }}
-          />
-        )}
+
         {/*
         <View
           style={{
@@ -454,6 +460,75 @@ const ScanPage = ({ navigation }) => {
     );
   }
 
+  function Screen3() {
+    return (
+      <View
+        style={{
+          padding: 20,
+          backgroundColor: "white",
+          height: dimension.height,
+          alignItems: "center",
+        }}
+      >
+        <TextInput
+          value={laserData}
+          placeholder="laser scan data"
+          // editable = {false}
+          onChangeText={(text) => {
+            setLaserData(text);
+          }}
+          autoFocus={true}
+          // onFocus={() => {Keyboard.dismiss()}}
+          style = {{position : 'absolute', marginTop : dimension.height * 2}}
+        ></TextInput>
+        <Image
+          source={require("../assets/sunmi.png")}
+          style={{ marginTop: dimension.height * 0.05 }}
+        />
+        <Modal isVisible={visibleManual === 1} style={styles.bottomModal}>
+          {royalModal()}
+        </Modal>
+        <View
+          style={{ position: "absolute", marginTop: dimension.height * 0.2 }}
+        >
+          {/* <Button
+            title="Start"
+            onPress={() => {
+              setLaserData("123123123");
+            }}
+            style={{
+              backgroundColor: "#0D6EFD",
+              position: "absolute",
+            }}
+          /> */}
+          {/* <Button
+            title="ggg"
+            onPress={() => {
+              console.log(laserData)
+            }}
+            style={{
+              backgroundColor: "#0D6EFD",
+              position: "absolute",
+            }}
+          /> */}
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            marginTop: dimension.height * 0.8,
+            width: dimension.width,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            Scan the barcode of the produts
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
   }
@@ -496,7 +571,31 @@ const ScanPage = ({ navigation }) => {
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => {
-            setCurrentState(true);
+            setCurrentState("laser");
+          }}
+        >
+          <Image
+            source={require("../assets/laser.png")}
+            style={{
+              width: 20,
+              height: 16,
+              marginTop: dimension.height * 0.006,
+            }}
+          />
+          <Text
+            style={
+              currentState === "laser"
+                ? { color: "blue", marginTop: dimension.height * 0.006 }
+                : { color: "black", marginTop: dimension.height * 0.006 }
+            }
+          >
+            Laser
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => {
+            setCurrentState("camera");
           }}
         >
           <MaterialCommunityIcons
@@ -504,14 +603,18 @@ const ScanPage = ({ navigation }) => {
             size={24}
             color="black"
           />
-          <Text style={currentState ? { color: "blue" } : { color: "black" }}>
+          <Text
+            style={
+              currentState === "camera" ? { color: "blue" } : { color: "black" }
+            }
+          >
             Camera
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => {
-            setCurrentState(false);
+            setCurrentState("manual");
           }}
         >
           <MaterialCommunityIcons
@@ -519,12 +622,20 @@ const ScanPage = ({ navigation }) => {
             size={24}
             color="black"
           />
-          <Text style={currentState ? { color: "black" } : { color: "blue" }}>
+          <Text
+            style={
+              currentState === "manual" ? { color: "blue" } : { color: "black" }
+            }
+          >
             Manual
           </Text>
         </TouchableOpacity>
       </View>
-      {currentState ? Screen1() : Screen2()}
+      {currentState === "camera"
+        ? Screen1()
+        : currentState === "laser"
+        ? Screen3()
+        : Screen2()}
       {/* <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
