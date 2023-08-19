@@ -27,11 +27,33 @@ const PrintScanPage = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scanData, setScanData] = useState("00000000000");
+
+  const [laserData, setLaserData] = useState("");
+  var previousLaserData = "";
+  useEffect(() => {
+    if (laserData !== "") {
+      // getProduct(laserData);
+      const interval = setInterval(() => {
+        // Access the current value of the input field
+        if (previousLaserData != laserData) previousLaserData = laserData;
+        else {
+          getProduct(laserData);
+          setScanData(laserData);
+          setLaserData("");
+          previousLaserData = "";
+        }
+        console.log(previousLaserData);
+      }, 50);
+
+      return () => clearInterval(interval);
+    }
+  }, [laserData]);
+
   const [productData, setProductData] = useState(null);
   const [init, setInit] = useState(true);
   const [previousScreen, setPreviousScreen] = useState("Barcode");
   const [serverUrl, setServerUrl] = useState("");
-  const [currentState, setCurrentState] = useState(true);
+  const [currentState, setCurrentState] = useState("laser");
   const [visibleManual, setVisibleManual] = useState(null);
   const [printVisible, setPrintVisible] = useState(null);
 
@@ -58,7 +80,23 @@ const PrintScanPage = ({ navigation }) => {
 
     getBarCodeScannerPermissions();
   }, []);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // do something - for example: reset states, ask for camera permission
+      setScanned(false);
+      setHasPermission(false);
+      setLaserData("");
+      console.log("back");
 
+      (async () => {
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        setHasPermission(status === "granted");
+      })();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
   const BarcodeGeneratorInit = () => {
     const barcodeNumber = "0000000000000"; // Replace with your barcode number
     // setInit(false);
@@ -565,6 +603,74 @@ const PrintScanPage = ({ navigation }) => {
       </View>
     );
   }
+  function Screen3() {
+    return (
+      <View
+        style={{
+          padding: 20,
+          backgroundColor: "white",
+          height: dimension.height,
+          alignItems: "center",
+        }}
+      >
+        <TextInput
+          value={laserData}
+          placeholder="laser scan data"
+          // editable = {false}
+          onChangeText={(text) => {
+            setLaserData(text);
+          }}
+          autoFocus={true}
+          // onFocus={() => {Keyboard.dismiss()}}
+          style={{ position: "absolute", }}
+        ></TextInput>
+        <Image
+          source={require("../assets/sunmi.png")}
+          style={{ marginTop: dimension.height * 0.05 }}
+        />
+        <Modal isVisible={visibleManual === 1} style={styles.bottomModal}>
+          {royalModal()}
+        </Modal>
+        <View
+          style={{ position: "absolute", marginTop: dimension.height * 0.2 }}
+        >
+          {/* <Button
+            title="Start"
+            onPress={() => {
+              setLaserData("123123123");
+            }}
+            style={{
+              backgroundColor: "#0D6EFD",
+              position: "absolute",
+            }}
+          /> */}
+          {/* <Button
+            title="ggg"
+            onPress={() => {
+              console.log(laserData)
+            }}
+            style={{
+              backgroundColor: "#0D6EFD",
+              position: "absolute",
+            }}
+          /> */}
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            marginTop: dimension.height * 0.8,
+            width: dimension.width,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            Scan the barcode of the produts
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
@@ -574,7 +680,13 @@ const PrintScanPage = ({ navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: "white", flex: 1 ,marginTop : -dimension.height * 0.062}}>
+    <View
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+        marginTop: -dimension.height * 0.062,
+      }}
+    >
       <View
         style={{
           position: "absolute",
@@ -602,7 +714,31 @@ const PrintScanPage = ({ navigation }) => {
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => {
-            setCurrentState(true);
+            setCurrentState("laser");
+          }}
+        >
+          <Image
+            source={require("../assets/laser.png")}
+            style={{
+              width: 20,
+              height: 16,
+              marginTop: dimension.height * 0.006,
+            }}
+          />
+          <Text
+            style={
+              currentState === "laser"
+                ? { color: "blue", marginTop: dimension.height * 0.006 }
+                : { color: "black", marginTop: dimension.height * 0.006 }
+            }
+          >
+            Laser
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => {
+            setCurrentState("camera");
           }}
         >
           <MaterialCommunityIcons
@@ -610,14 +746,18 @@ const PrintScanPage = ({ navigation }) => {
             size={24}
             color="black"
           />
-          <Text style={currentState ? { color: "blue" } : { color: "black" }}>
+          <Text
+            style={
+              currentState === "camera" ? { color: "blue" } : { color: "black" }
+            }
+          >
             Camera
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => {
-            setCurrentState(false);
+            setCurrentState("manual");
           }}
         >
           <MaterialCommunityIcons
@@ -625,12 +765,20 @@ const PrintScanPage = ({ navigation }) => {
             size={24}
             color="black"
           />
-          <Text style={currentState ? { color: "black" } : { color: "blue" }}>
+          <Text
+            style={
+              currentState === "manual" ? { color: "blue" } : { color: "black" }
+            }
+          >
             Manual
           </Text>
         </TouchableOpacity>
       </View>
-      {currentState ? Screen1() : Screen2()}
+      {currentState === "camera"
+        ? Screen1()
+        : currentState === "laser"
+        ? Screen3()
+        : Screen2()}
       <Modal isVisible={visibleManual === 1} style={styles.bottomModal}>
         {royalModal()}
       </Modal>

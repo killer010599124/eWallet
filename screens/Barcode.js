@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
-  Keyboard 
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import Button from "../Components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,13 +32,29 @@ const ScanPage = ({ navigation }) => {
   const scannerRef = useRef(null);
 
   const [laserData, setLaserData] = useState("");
-  const [hiddenValue, setHiddenValue] = useState("");
+  var previousLaserData = "";
   useEffect(() => {
-    if (laserData != "") {
-      getProduct(laserData);
+    if (laserData !== "") {
+      // getProduct(laserData);
+      const interval = setInterval(() => {
+        // Access the current value of the input field
+        if (previousLaserData != laserData) previousLaserData = laserData;
+        else {
+          getProduct(laserData);
+          setScanData(laserData);
+          setLaserData("");
+          previousLaserData = "";
+        }
+        console.log(previousLaserData);
+      }, 500);
+
+      return () => clearInterval(interval);
     }
   }, [laserData]);
-  const focusRef = React.useRef()
+
+  const textInputRef = useRef(null);
+
+  const handlePress = () => {};
 
   const [init, setInit] = useState(true);
   const [previousScreen, setPreviousScreen] = useState("Barcode");
@@ -67,6 +84,7 @@ const ScanPage = ({ navigation }) => {
     };
 
     getBarCodeScannerPermissions();
+    Keyboard.dismiss();
   }, []);
 
   useEffect(() => {
@@ -75,8 +93,8 @@ const ScanPage = ({ navigation }) => {
       setScanned(false);
       setHasPermission(false);
       setLaserData("");
-      setHiddenValue("");
       console.log("back");
+
       (async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setHasPermission(status === "granted");
@@ -182,7 +200,6 @@ const ScanPage = ({ navigation }) => {
         console.error(error);
       });
   };
-
   const royalModal = () => {
     return (
       <View
@@ -470,17 +487,26 @@ const ScanPage = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <TextInput
-          value={laserData}
-          placeholder="laser scan data"
-          // editable = {false}
-          onChangeText={(text) => {
-            setLaserData(text);
-          }}
-          autoFocus={true}
-          // onFocus={() => {Keyboard.dismiss()}}
-          style = {{position : 'absolute', marginTop : dimension.height * 2}}
-        ></TextInput>
+        <TouchableWithoutFeedback
+       
+        >
+          <TextInput
+            value={laserData}
+            placeholder="laser scan data"
+            onChangeText={(text) => {
+              setLaserData(text);
+            }}
+            ref={textInputRef}
+            autoFocus={true}
+            // onFocus={() => {
+            //   Keyboard.dismiss();
+            //   textInputRef.current.focus();
+            // }}
+            showSoftInputOnFocus={false}
+            style={{ position: "absolute",marginTop : dimension.height * 2}}
+          ></TextInput>
+        </TouchableWithoutFeedback>
+
         <Image
           source={require("../assets/sunmi.png")}
           style={{ marginTop: dimension.height * 0.05 }}
@@ -495,6 +521,7 @@ const ScanPage = ({ navigation }) => {
             title="Start"
             onPress={() => {
               setLaserData("123123123");
+              // textInputRef.current.blur();
             }}
             style={{
               backgroundColor: "#0D6EFD",

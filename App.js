@@ -34,6 +34,7 @@ export default function App() {
           <Stack.Screen name="PriceUpdate" component={PriceUpdatePage} options={{ headerShown: false }}/>
           <Stack.Screen name="Barcode" component={ScanPage}  options={{ headerShown: false }}/>
           <Stack.Screen name="PrintScan" component={PrintScanPage}  options={{ headerShown: false }}/>
+        
         </Stack.Navigator>
       </NavigationContainer>
   );
