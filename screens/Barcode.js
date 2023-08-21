@@ -46,7 +46,7 @@ const ScanPage = ({ navigation }) => {
           previousLaserData = "";
         }
         console.log(previousLaserData);
-      }, 500);
+      }, 50);
 
       return () => clearInterval(interval);
     }
@@ -503,7 +503,7 @@ const ScanPage = ({ navigation }) => {
             //   textInputRef.current.focus();
             // }}
             showSoftInputOnFocus={false}
-            style={{ position: "absolute",marginTop : dimension.height * 2}}
+            style={{ position: "absolute" , marginTop : dimension.height * 2}}
           ></TextInput>
         </TouchableWithoutFeedback>
 

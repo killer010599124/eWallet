@@ -621,8 +621,9 @@ const PrintScanPage = ({ navigation }) => {
             setLaserData(text);
           }}
           autoFocus={true}
+          showSoftInputOnFocus
           // onFocus={() => {Keyboard.dismiss()}}
-          style={{ position: "absolute", }}
+          style={{ position: "absolute",marginTop : dimension.height * 2 }}
         ></TextInput>
         <Image
           source={require("../assets/sunmi.png")}
