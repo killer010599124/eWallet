@@ -61,7 +61,7 @@ const ScannerPage = ({navigation}) => {
               />
               <View style={{ marginLeft: 10, width: "60%" }}>
                 <Text style={styles.info}>Information about the image</Text>
-                <Text style={styles.info}>$154.00</Text>
+                <Text style={styles.info}>€154.00</Text>
               </View>
               <TouchableOpacity
                 style={{

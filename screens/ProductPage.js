@@ -15,6 +15,7 @@ import { useIsFocused, useScrollToTop } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Button from "../Components/Button";
 import CustomHeader from "../Components/header";
+import { AntDesign } from "@expo/vector-icons";
 const ProductScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [flag, setFlag] = useState(false);
@@ -131,7 +132,7 @@ const ProductScreen = ({ navigation }) => {
           <Text
             style={{
               color: "#0D6EFD",
-              fontSize: 12,
+              fontSize: dimension.width * 0.04,
               width: dimension.width * 0.6,
             }}
           >
@@ -142,11 +143,15 @@ const ProductScreen = ({ navigation }) => {
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: 'flex-end'
+              justifyContent: "flex-end",
             }}
           >
             {/* <Text style={{ fontSize: 12 }}>${item.standard_price}</Text> */}
-            <Text style={{ fontSize: 12, fontWeight : 'bold' }}>${item.list_price}</Text>
+            <Text
+              style={{ fontSize: dimension.width * 0.04, fontWeight: "bold" }}
+            >
+              €{item.list_price.toFixed(2)}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -224,6 +229,27 @@ const ProductScreen = ({ navigation }) => {
               position: "absolute",
               marginTop: dimension.height * 0.03,
               marginLeft: -dimension.width * 0.75,
+              zIndex: 99,
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            handleSearch("");
+          }}
+          style = {{}}
+        >
+          <AntDesign
+            name="close"
+            size={22}
+            color="#6A6A6A"
+            style={{
+              width: 22,
+              height: 22,
+              position: "absolute",
+              //   borderRadius: dimension.height * 0.02,
+              marginLeft: -dimension.width * 0.08,
+              marginTop: dimension.height * 0.026,
               zIndex: 99,
             }}
           />

@@ -301,11 +301,15 @@ const ScanPage = ({ navigation }) => {
         />
         <View
           style={{
-            borderColor: "red",
-            width: dimension.width,
-            height: 2,
-            borderWidth: 1,
-            marginTop: dimension.height * 0.45,
+            borderColor: "white",
+            borderRadius : dimension.width * 0.05,
+            width: dimension.width * 0.9,
+            backgroundColor : 'black',
+            opacity : 0.5,
+            height: dimension.height * 0.2,
+            borderWidth: 2,
+            marginTop: dimension.height * 0.35,
+            alignSelf :'center'
           }}
         ></View>
         <View

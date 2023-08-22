@@ -16,6 +16,8 @@ import NumericPad from "react-native-numeric-pad";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
 
+
+
 const PriceUpdatePage = ({ navigation, route }) => {
   const [dimension, setDimension] = useState(Dimensions.get("window"));
   const onChange = () => {
@@ -30,10 +32,10 @@ const PriceUpdatePage = ({ navigation, route }) => {
   const [amount, setAmount] = useState("");
   const numpadRef = useRef(null);
 
-  const [saleprice, setSaleprice] = useState(null);
+  const [saleprice, setSaleprice] = useState('');
 
   useEffect(() => {
-    setSaleprice(product[0].list_price.toString());
+    setSaleprice(product[0].list_price.toFixed(2).toString());
   }, []);
 
   const [isTooltipVisible, setTooltipVisible] = useState(false);
@@ -143,7 +145,7 @@ const PriceUpdatePage = ({ navigation, route }) => {
             marginTop: dimension.height * 0.02,
           }}
         >
-          <Text style={styles.name}>$</Text>
+          <Text style={styles.name}>€</Text>
           <Text style={styles.name}>{saleprice}</Text>
           {/* <TextInput
             style={{ ...styles.name }}
@@ -158,10 +160,10 @@ const PriceUpdatePage = ({ navigation, route }) => {
         </View>
       </View>
       {isTooltipVisible && (
-        <View style={{...styles.tooltipContainer, top: dimension.height * 0.48, left : dimension.width * 0.75}}>
+        <View style={{...styles.tooltipContainer, top: dimension.height * 0.44, left : dimension.width * 0.75}}>
           <View style={styles.tooltipContent}>
             <Text style={{ ...styles.barcode }}>
-              ${product[0].standard_price}
+            €{product[0].standard_price.toFixed(2)}
             </Text>
           </View>
         </View>
@@ -170,7 +172,7 @@ const PriceUpdatePage = ({ navigation, route }) => {
       <TouchableOpacity
         style={{
           position: "absolute",
-          marginTop: dimension.height * 0.55,
+          marginTop: dimension.height * 0.5,
           marginLeft: dimension.width * 0.8,
         }}
         onPress={toggleTooltip}
@@ -178,10 +180,10 @@ const PriceUpdatePage = ({ navigation, route }) => {
         <Ionicons name="ios-alert-circle" size={30} color="#FFA800" />
       </TouchableOpacity>
       <NumericPad
-        style={{position : 'absolute', marginTop: dimension.height * 0.6, alignSelf : 'center' }}
+        style={{position : 'absolute', marginTop: dimension.height * 0.55, alignSelf : 'center' }}
         ref={numpadRef}
         numLength={8}
-        buttonSize={dimension.height * 0.06}
+        buttonSize={dimension.height * 0.07}
         activeOpacity={0.1}
         onValueChange={(value) => setSaleprice(value)}
         allowDecimal={true}
@@ -204,7 +206,7 @@ const PriceUpdatePage = ({ navigation, route }) => {
           width: dimension.width,
           alignItems: "center",
 
-          marginTop: dimension.height * 0.93,
+          marginTop: dimension.height * 0.9,
         }}
       >
         <Button

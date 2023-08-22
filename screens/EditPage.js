@@ -27,40 +27,13 @@ const EditPage = ({ navigation, route }) => {
   const [dcode, setDcode] = useState(parsedProduct.default_code);
   const [barcode, setBarcode] = useState(parsedProduct.barcode);
   const [saleprice, setSaleprice] = useState(
-    parsedProduct.list_price.toString()
+    parsedProduct.list_price.toFixed(2).toString()
   );
   const [cost, setCost] = useState(parsedProduct.standard_price.toString());
 
   const onChange = () => {
     setDimension(Dimensions.get("window"));
   };
-  const listItemData = [
-    {
-      leftIcon: require("../assets/nameIcon.png"),
-      description: "Name",
-      rightInfo: parsedProduct.name,
-    },
-    {
-      leftIcon: require("../assets/IRIcon.png"),
-      description: "Internal reference",
-      rightInfo: parsedProduct.default_code,
-    },
-    {
-      leftIcon: require("../assets/barcodeIcon.png"),
-      description: "Barcode",
-      rightInfo: parsedProduct.barcode,
-    },
-    {
-      leftIcon: require("../assets/spIcon.png"),
-      description: "Sales Price",
-      rightInfo: `$${parsedProduct.list_price}`,
-    },
-    {
-      leftIcon: require("../assets/costIcon.png"),
-      description: "Cost",
-      rightInfo: `$${parsedProduct.standard_price}`,
-    },
-  ];
   const ListItem = ({ leftIcon, rightInfo, description }) => {
     return (
       <View
@@ -261,7 +234,7 @@ const EditPage = ({ navigation, route }) => {
                   fontWeight: "bold",
                 }}
               >
-                $
+                €
               </Text>
               <TextInput
                 onChangeText={(text) => setSaleprice(text)}

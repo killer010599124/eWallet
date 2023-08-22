@@ -105,10 +105,10 @@ const ProductDetailPage = ({ navigation, route }) => {
           }}
         >
           <Text style={styles.largeLetter}>
-            ${parsedProduct.list_price.toString().split(".")[0]}
+          €{parsedProduct.list_price.toFixed(2).toString().split(".")[0]}
           </Text>
           <Text style={styles.smallLetter}>
-            .{parsedProduct.list_price.toString().split(".")[1]}
+            .{parsedProduct.list_price.toFixed(2).toString().split(".")[1]}
           </Text>
         </View>
         {/* <Text style={styles.price}>${parsedProduct.list_price}</Text> */}

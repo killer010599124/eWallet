@@ -32,9 +32,9 @@
       },
       "versionCode": 2,
       "config": {
-        "googleMobileAdsAppId":"ca-app-pub-349893000004~000000"
+        "googleMobileAdsAppId": "ca-app-pub-349893000004~000000"
       },
-      "package": "com.icetulip.eWallet",
+      "package": "com.killerrampage.eWallet",
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
@@ -45,9 +45,8 @@
     },
     "extra": {
       "eas": {
-        "projectId": "a3125cc3-2d14-4285-8466-a80251e356d3"
+        "projectId": "c457f278-f702-4a37-ba5b-9afb7daf1e6a"
       }
-    },
-    "owner": "killerrampage"
+    }
   }
 }

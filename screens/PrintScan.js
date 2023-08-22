@@ -22,6 +22,10 @@ import CustomHeader from "../Components/header";
 import Barcode from "@kichiyaki/react-native-barcode-generator";
 import NumericPad from "react-native-numeric-pad";
 import Icon from "react-native-vector-icons/Ionicons";
+import { AntDesign } from "@expo/vector-icons";
+
+import { SunmiScan } from '@heasy/react-native-sunmi-printer';
+
 LogBox.ignoreAllLogs();
 const PrintScanPage = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -154,7 +158,7 @@ const PrintScanPage = ({ navigation }) => {
         style={{
           alignItems: "center",
           width: "100%",
-          marginTop: dimension.height * 0.05,
+          marginTop: dimension.height * 0.03,
         }}
       >
         <Barcode
@@ -163,9 +167,9 @@ const PrintScanPage = ({ navigation }) => {
           text={barcodeNumber}
           style={{}}
           textStyle={{ fontWeight: "bold", fontSize: 18 }}
-          maxWidth={dimension.width * 0.8}
-          width={dimension.width * 0.8}
-          height={dimension.height * 0.06}
+          maxWidth={dimension.width * 0.9}
+          width={dimension.width * 0.9}
+          height={dimension.height * 0.05}
         />
       </View>
     );
@@ -219,6 +223,9 @@ const PrintScanPage = ({ navigation }) => {
       });
   };
 
+  const _printRecieve = () => {
+    
+  };
   const royalModal = () => {
     return (
       <View
@@ -325,24 +332,33 @@ const PrintScanPage = ({ navigation }) => {
             alignItems: "center",
           }}
         >
+          <View
+            style={{
+              position: "absolute",
+              width: "100%",
+              alignItems: "flex-end",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                borderRadius: 10,
+                height: dimension.height * 0.04,
+                width: dimension.height * 0.04,
+                //   borderRadius: dimension.height * 0.02,
+                marginRight: 10,
+                marginTop: 10,
+              }}
+              onPress={() => {
+                setPrintVisible(null);
+              }}
+            >
+              <AntDesign name="close" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
           <Image
             source={{ uri: `${serverUrl}${productData.image_url}` }}
             style={styles.image}
           />
-          <Text
-            style={{
-              fontWeight: "bold",
-              alignSelf: "center",
-              width: dimension.width * 0.6,
-              marginTop: dimension?.height * 0.02,
-              marginLeft: -dimension.width * 0.3,
-              color: "#15224F",
-              fontSize: 20,
-              fontWeight: "bold",
-            }}
-          >
-            {productData.name}
-          </Text>
           <Text
             style={{
               fontWeight: "bold",
@@ -360,9 +376,24 @@ const PrintScanPage = ({ navigation }) => {
             style={{
               fontWeight: "bold",
               alignSelf: "center",
+              width: dimension.width * 0.6,
+              // marginTop: dimension?.height * 0.01,
+              marginLeft: -dimension.width * 0.3,
+              color: "#15224F",
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            {productData.name}
+          </Text>
+
+          <Text
+            style={{
+              fontWeight: "bold",
+              alignSelf: "center",
               textAlign: "center",
               width: dimension.width * 0.6,
-              marginTop: dimension?.height * 0.02,
+              marginTop: dimension?.height * 0.01,
               color: "black",
               fontSize: dimension.height * 0.05,
               fontWeight: "bold",
@@ -381,7 +412,7 @@ const PrintScanPage = ({ navigation }) => {
               fontWeight: "bold",
             }}
           >
-            ${productData.list_price}
+            €{productData.list_price.toFixed(2)}
           </Text>
           <View style={{}}>{PrintBarcodeGenerator()}</View>
 
@@ -398,6 +429,7 @@ const PrintScanPage = ({ navigation }) => {
               onPress={() => {
                 //   navigation.navigate("New", { scanData, previousScreen });
                 setPrintVisible(null);
+                _printRecieve();
               }}
             />
           </View>
@@ -428,11 +460,15 @@ const PrintScanPage = ({ navigation }) => {
         />
         <View
           style={{
-            borderColor: "red",
-            width: dimension.width,
-            height: 2,
-            borderWidth: 1,
-            marginTop: dimension.height * 0.45,
+            borderColor: "white",
+            borderRadius: dimension.width * 0.05,
+            width: dimension.width * 0.9,
+            backgroundColor: "black",
+            opacity: 0.5,
+            height: dimension.height * 0.2,
+            borderWidth: 2,
+            marginTop: dimension.height * 0.35,
+            alignSelf: "center",
           }}
         ></View>
         <View
@@ -621,9 +657,9 @@ const PrintScanPage = ({ navigation }) => {
             setLaserData(text);
           }}
           autoFocus={true}
-          showSoftInputOnFocus
+          showSoftInputOnFocus={false}
           // onFocus={() => {Keyboard.dismiss()}}
-          style={{ position: "absolute",marginTop : dimension.height * 2 }}
+          style={{ position: "absolute", marginTop: dimension.height * 2 }}
         ></TextInput>
         <Image
           source={require("../assets/sunmi.png")}
@@ -829,8 +865,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: "50%",
-    height: "20%",
+    width: "40%",
+    height: "28%",
     marginTop: "10%",
   },
   info: {

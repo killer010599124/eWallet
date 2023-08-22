@@ -165,9 +165,10 @@ const LoginScreen = ({ navigation, route }) => {
         // listItemContainerStyle = {{backgroundColor : '#F7F7F9', borderColor : '#F7F7F9'}}
         placeholder="Select an database"
         // dropDownContainerStyle = {{backgroundColor : 'red'}}
-        selectedItemContainerStyle={{
-          backgroundColor: "#F7F7F9",
-          borderColor: "#F7F7F9",
+        dropDownContainerStyle={{
+          backgroundColor: '#F7F7F9',
+          borderColor: 'skyblue',
+          borderWidth : 0
         }}
         open={open}
         value={value}

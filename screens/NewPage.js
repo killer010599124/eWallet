@@ -178,6 +178,9 @@ const NewPage = ({ navigation, route }) => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                onPress={() => {
+                  navigation.navigate('Barcode')
+                }}
               >
                 <Ionicons name="barcode-outline" size={24} color="black" />
               </TouchableOpacity>
@@ -206,7 +209,7 @@ const NewPage = ({ navigation, route }) => {
                   fontWeight: "bold",
                 }}
               >
-                $
+                €
               </Text>
               <TextInput
                 onChangeText={(text) => setSaleprice(text)}
