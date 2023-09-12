@@ -15,6 +15,7 @@ import ScannerPage from "./screens/ScanPage";
 import PriceUpdatePage from "./screens/PriceUpdate";
 import ScanPage from "./screens/Barcode";
 import PrintScanPage from "./screens/PrintScan";
+import Demo from "./screens/demo";
 // Import any other screens you want to use
 const Stack = createStackNavigator();
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
   
       <NavigationContainer>
         <Stack.Navigator>
+        {/* <Stack.Screen name="Demo" component={Demo} options={{ headerShown: false }}/> */}
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>

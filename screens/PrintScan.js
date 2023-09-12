@@ -24,7 +24,6 @@ import NumericPad from "react-native-numeric-pad";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AntDesign } from "@expo/vector-icons";
 
-import { SunmiScan } from '@heasy/react-native-sunmi-printer';
 
 LogBox.ignoreAllLogs();
 const PrintScanPage = ({ navigation }) => {
@@ -205,10 +204,8 @@ const PrintScanPage = ({ navigation }) => {
       })
       .then((data) => {
         // Here, you can access the JSON data
-        console.log(data);
         if (data.length != 0) {
           setPrintVisible(1);
-          console.log(data);
           setProductData(data[0]);
           //   navigation.navigate("PriceUpdate", { data });
         } else {
@@ -224,7 +221,9 @@ const PrintScanPage = ({ navigation }) => {
   };
 
   const _printRecieve = () => {
-    
+    // SunmiPrinter.init()
+    // SunmiPrinter.printerInit();
+    SunmiPrinter.printerText('Hello World');
   };
   const royalModal = () => {
     return (
@@ -320,7 +319,6 @@ const PrintScanPage = ({ navigation }) => {
   };
 
   const PrintModal = () => {
-    console.log(productData);
     if (productData != null)
       return (
         <View
